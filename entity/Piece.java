@@ -1,3 +1,3 @@
-public abstract class Entity{
+public abstract class Piece{
     abstract boolean check_valid_move();
 }
