@@ -2,8 +2,9 @@ public class Base {
     static final int change_turn_no = 2;
     static final int number_of_players = 2;
     
-    static Piece[][] Board = new Piece[7][6];
     static int turn = 0;
+
+    static int[][] board = new int[7][6];
 
     /* 
      * 
@@ -34,6 +35,6 @@ public class Base {
      */
 
     public static void main(String[] args) {
-        
+        System.out.println(board.length);
     }
 }

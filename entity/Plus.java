@@ -1,13 +1,13 @@
 public class Plus extends Piece {
 
     public Plus(int playerIndex) {
-        this.player_index = playerIndex;
+        this.playerIndex = playerIndex;
     }
 
     @Override
-    boolean check_valid_move(int start_x, int start_y, int end_x, int end_y) {
+    boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
         // Check if the move is within the board boundaries
-        if (end_x < 0 || end_x >= ChessBoard.ROWS || end_y < 0 || end_y >= ChessBoard.COLS) {
+        if (end_x < 0 || end_x >= Board.ROWS || end_y < 0 || end_y >= Board.COLS) {
             return false;
         }
 
@@ -22,7 +22,7 @@ public class Plus extends Piece {
 
             int currentY = start_y + increment;
             while (currentY != end_y) {
-                Piece piece = ChessBoard.getInstance().getPiece(start_x, currentY);
+                Piece piece = Board.getPiece(start_x, currentY);
                 if (piece != null) {
                     return false; // There is a piece in the vertical path
                 }
@@ -33,7 +33,7 @@ public class Plus extends Piece {
 
             int currentX = start_x + increment;
             while (currentX != end_x) {
-                Piece piece = ChessBoard.getInstance().getPiece(currentX, start_y);
+                Piece piece = Board.getPiece(currentX, start_y);
                 if (piece != null) {
                     return false; // There is a piece in the horizontal path
                 }
@@ -42,7 +42,7 @@ public class Plus extends Piece {
         }
 
         // Check if the destination is occupied by another piece of the same player
-        Piece destinationPiece = ChessBoard.getInstance().getPiece(end_x, end_y);
-        return destinationPiece == null || destinationPiece.player_index != this.player_index;
+        Piece destinationPiece = Board.getPiece(end_x, end_y);
+        return destinationPiece == null || destinationPiece.playerIndex != this.playerIndex;
     }
 }

@@ -1,13 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ChessBoard {
-    private static final int ROWS = 6;
-    private static final int COLS = 7;
+public class Board {
+    static final int ROWS = 6;
+    static final int COLS = 7;
     private final JFrame frame;
     private final JPanel boardPanel;
 
-    public ChessBoard() {
+    static Piece[][] board = new Piece[ROWS][COLS];
+
+    
+    public Board() {
         frame = new JFrame("Talabia Chess");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 600);
@@ -28,6 +31,11 @@ public class ChessBoard {
         }
     }
 
+    public static Piece getPiece(int x, int y)
+    {
+        return board[y][x];
+    }
+
     public void show() {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -35,8 +43,8 @@ public class ChessBoard {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ChessBoard chessBoard = new ChessBoard();
-            chessBoard.show();
+            Board Board = new Board();
+            Board.show();
         });
     }
 }
