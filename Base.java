@@ -1,4 +1,5 @@
 public class Base {
+
     /* 
      * 
      * define pieces (set placement on board and player controlling)
