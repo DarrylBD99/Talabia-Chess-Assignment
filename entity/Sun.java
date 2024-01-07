@@ -7,7 +7,7 @@ public class Sun extends Piece {
     @Override
     boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
         // Check if the move is within the board boundaries
-        if (end_x < 0 || end_x >= Board.ROWS || end_y < 0 || end_y >= Board.COLS) {
+        if (end_x < 0 || end_x >= ChessView.ROWS || end_y < 0 || end_y >= ChessView.COLS) {
             return false;
         }
 
@@ -17,7 +17,7 @@ public class Sun extends Piece {
         }
 
         // Check if the destination is occupied by another piece of the same player
-        Piece destinationPiece = Board.getPiece(end_x, end_y);
+        Piece destinationPiece = ChessView.getPiece(end_x, end_y);
         return destinationPiece == null || destinationPiece.playerIndex != this.playerIndex;
     }
 }

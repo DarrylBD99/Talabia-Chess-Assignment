@@ -7,7 +7,7 @@ public class Time extends Piece {
     @Override
     boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
         // Check if the move is within the board boundaries
-        if (end_x < 0 || end_x >= Board.ROWS || end_y < 0 || end_y >= Board.COLS) {
+        if (end_x < 0 || end_x >= ChessView.ROWS || end_y < 0 || end_y >= ChessView.COLS) {
             return false;
         }
 
@@ -24,7 +24,7 @@ public class Time extends Piece {
         int currentY = start_y + yIncrement;
 
         while (currentX != end_x && currentY != end_y) {
-            Piece piece = Board.getPiece(currentX, currentY);
+            Piece piece = ChessView.getPiece(currentX, currentY);
             if (piece != null) {
                 return false; // There is a piece in the diagonal path
             }
@@ -34,7 +34,7 @@ public class Time extends Piece {
         }
 
         // Check if the destination is occupied by another piece of the same player
-        Piece destinationPiece = Board.getPiece(end_x, end_y);
+        Piece destinationPiece = ChessView.getPiece(end_x, end_y);
         return destinationPiece == null || destinationPiece.playerIndex != this.playerIndex;
     }
 }

@@ -1,11 +1,4 @@
 public class Base {
-    static final int change_turn_no = 2;
-    static final int number_of_players = 2;
-    
-    static int turn = 0;
-
-    static int[][] board = new int[7][6];
-
     /* 
      * 
      * define pieces (set placement on board and player controlling)
@@ -33,8 +26,4 @@ public class Base {
      * }
      * 
      */
-
-    public static void main(String[] args) {
-        System.out.println(board.length);
-    }
 }

@@ -2,10 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ChessView extends JFrame {
-    private static final int ROWS = 6;
-    private static final int COLS = 7;
+    public static final int ROWS = 6;
+    public static final int COLS = 7;
     private final JPanel boardPanel;
-
+    private static Piece[][] board = new Piece[ROWS][COLS];
 
     public ChessView() {
         setTitle("Talabia Chess");
@@ -42,6 +42,8 @@ public class ChessView extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+    public static Piece getPiece(int x, int y) { return board[y][x]; }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
