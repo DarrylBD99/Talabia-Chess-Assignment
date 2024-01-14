@@ -1,4 +1,9 @@
-public class Time extends Piece {
+public class TimeController extends PieceController {
+
+    public TimeController(Piece model, PieceView view) {
+        super(model, view);
+        //TODO Auto-generated constructor stub
+    }
 
     @Override
     boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
@@ -28,7 +33,7 @@ public class Time extends Piece {
 
             // Check if the destination is occupied by another piece of the same player
             Piece destinationPiece = ChessView.getPiece(end_x, end_y);
-            return destinationPiece == null || destinationPiece.playerIndex != this.playerIndex;
+            return destinationPiece == null || destinationPiece.playerIndex != model.getPlayerIndex();
         }
 
         return false;

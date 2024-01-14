@@ -13,8 +13,8 @@ public class ChessView extends JFrame {
     
     static int turn = 0;
 
-    private static final Piece[] row_format_front = {new Point(), new Point(), new Point(), new Point(), new Point(), new Point(), new Point()};
-    private static final Piece[] row_format_back = {new Plus(), new HourGlass(), new Time(), new Sun(), new Time(), new HourGlass(), new Plus()};
+    //private static final Piece[] row_format_front = {new PointController(), new PointController(), new PointController(), new PointController(), new PointController(), new PointController(), new PointController()};
+    //private static final Piece[] row_format_back = {new PlusController(), new HourGlass(), new TimeController(), new SunController(), new TimeController(), new HourGlass(), new PlusController()};
 
 
     private static Piece[][] board = new Piece[ROWS][COLS];

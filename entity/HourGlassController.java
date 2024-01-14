@@ -1,4 +1,9 @@
-public class HourGlass extends Piece {
+public class HourGlassController extends PieceController {
+
+    public HourGlassController(Piece model, PieceView view) {
+        super(model, view);
+        //TODO Auto-generated constructor stub
+    }
 
     @Override
     boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
@@ -11,7 +16,7 @@ public class HourGlass extends Piece {
             if ((xDistance == 2 && yDistance == 3) || (xDistance == 3 && yDistance == 2)) {
                 // Check if the destination is occupied by another piece of the same player
                 Piece destinationPiece = ChessView.getPiece(end_x, end_y);
-                return destinationPiece == null || destinationPiece.playerIndex != this.playerIndex;
+                return destinationPiece == null || destinationPiece.playerIndex != model.getPlayerIndex();
             }
         }
         return false;

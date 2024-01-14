@@ -1,9 +1,14 @@
-public class Point extends Piece {
+public class PointController extends PieceController {
+
+    public PointController(Piece model, PieceView view) {
+        super(model, view);
+        //TODO Auto-generated constructor stub
+    }
 
     @Override
     boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
         // Check if the move is forward
-        int direction = (playerIndex == 0) ? 1 : -1; // Adjust direction based on player
+        int direction = (model.getPlayerIndex() == 0) ? 1 : -1; // Adjust direction based on player
         if (end_x != start_x + direction && end_x != start_x + 2 * direction) {
             return false;
         }
