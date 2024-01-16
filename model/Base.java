@@ -1,24 +1,4 @@
-public class Main {
-    public static void main(String[] args) {
-        
-    }
-    /*
-     * piece_type: 
-     * 0: Point
-     * 1: HourGlass
-     * 2: Time
-     * 3: Plus
-     * 4: Sun
-     */
-
-    /*
-     * to define pieces:
-     * 
-     * Piece model = new Piece(player_index, piece_type)
-     * PieceView view = new PieceView()
-     * 
-     * PieceController *insert piece name* = PieceController.get_piece_controller(model, view)
-     */
+public class Base {
 
     /* 
      * 

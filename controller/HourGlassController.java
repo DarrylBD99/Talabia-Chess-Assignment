@@ -1,3 +1,4 @@
+import java.awt.Color;
 public class HourGlassController extends PieceController {
 
     public HourGlassController(Piece model, PieceView view) {
@@ -16,7 +17,7 @@ public class HourGlassController extends PieceController {
             if ((xDistance == 2 && yDistance == 3) || (xDistance == 3 && yDistance == 2)) {
                 // Check if the destination is occupied by another piece of the same player
                 Piece destinationPiece = ChessView.getPiece(end_x, end_y);
-                return destinationPiece == null || destinationPiece.playerIndex != model.getPlayerIndex();
+                return destinationPiece == null || destinationPiece.getPlayerIndex() != model.getPlayerIndex();
             }
         }
         return false;

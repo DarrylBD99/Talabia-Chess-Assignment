@@ -1,5 +1,5 @@
+import java.awt.Color;
 public class PointController extends PieceController {
-
     public PointController(Piece model, PieceView view) {
         super(model, view);
         //TODO Auto-generated constructor stub

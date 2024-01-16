@@ -1,3 +1,4 @@
+import java.awt.Color;
 public class PlusController extends PieceController {
     public PlusController(Piece model, PieceView view) {
         super(model, view);
@@ -34,7 +35,7 @@ public class PlusController extends PieceController {
             }
             // Check if the destination is occupied by another piece of the same player
             Piece destinationPiece = ChessView.getPiece(end_x, end_y);
-            return destinationPiece == null || destinationPiece.playerIndex != model.getPlayerIndex();
+            return destinationPiece == null || destinationPiece.getPlayerIndex() != model.getPlayerIndex();
         }
         
         return false;
