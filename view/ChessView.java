@@ -19,8 +19,11 @@ public class ChessView extends JFrame {
     static int turn = 0;
 
     // Arrays representing the initial arrangement of pieces on the front and back rows.
-    private static final PieceType[] row_format_front = {PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT};
-    private static final PieceType[] row_format_back = {PieceType.PLUS, PieceType.HOURGLASS, PieceType.TIME, PieceType.SUN, PieceType.TIME, PieceType.HOURGLASS, PieceType.PLUS};
+    private static final PieceType[] row_format_front =
+    {PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT};
+    
+    private static final PieceType[] row_format_back =
+    {PieceType.PLUS, PieceType.HOURGLASS, PieceType.TIME, PieceType.SUN, PieceType.TIME, PieceType.HOURGLASS, PieceType.PLUS};
 
     // 2D array to represent the chess board and store pieces.
     private static PieceController[][] board = new PieceController[ROWS][COLS];
@@ -142,6 +145,7 @@ public class ChessView extends JFrame {
 
     // Retrieves the piece at the specified coordinates on the chess board.
     public static Piece getPiece(int x, int y) {
+        if (board[y][x] == null) return null;
         return board[y][x].model;
     }
 
