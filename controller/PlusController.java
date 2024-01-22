@@ -1,4 +1,3 @@
-import java.awt.Color;
 public class PlusController extends PieceController {
     public PlusController(Piece model, PieceView view) {
         super(model, view);
