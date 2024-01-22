@@ -3,5 +3,5 @@ public enum PieceType {
     PLUS,
     HOURGLASS,
     TIME,
-    SUN;
+    SUN
 }
