@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -12,7 +14,7 @@ public class ChessView extends JFrame {
     // Number of columns on the chess board.
     public static final int COLS = 7;
     // Panel that holds the chess board.
-    private final JPanel boardPanel;
+    private static JPanel boardPanel;
 
     // Size of each square on the chessboard
     private static final int squareSize = 50;
@@ -34,6 +36,9 @@ public class ChessView extends JFrame {
     static int thickness = 2;
 
     static int currentPlayer = 1; // Initialize with Player 1
+    static boolean isBoardRotated = true; // Keep track of the rotation state
+
+    private static JLabel turnLabel; // JLabel to display the current player's turn
 
 
     // Constructor for the ChessView class.
@@ -55,6 +60,11 @@ public class ChessView extends JFrame {
 
         // Add the board panel to the JFrame.
         add(boardPanel);
+
+        // Initialize the JLabel for turn information
+        turnLabel = new JLabel("Current Turn: Player " + currentPlayer);
+        turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(turnLabel, BorderLayout.SOUTH); // Add it to the bottom of the JFrame
     }
 
     // Initializes the graphical representation of the chess board.
@@ -96,12 +106,9 @@ public class ChessView extends JFrame {
         UpdatePieces();
     }
 
-    static void UpdatePieces()
-    {
-        for (int y = 0; y < ROWS; y++)
-        {
-            for (int x = 0; x < COLS; x++)
-            {
+    static void UpdatePieces() {
+        for (int y = 0; y < ROWS; y++) {
+            for (int x = 0; x < COLS; x++) {
                 ChessSquare square = get_square_from_coords(x, y);
 
                 // Set the icon of the label based on the piece present on the chess square.
@@ -109,14 +116,31 @@ public class ChessView extends JFrame {
                 Piece piece = getPiece(x, y);
                 if (piece != null && piece.getPieceType() != null) {
                     ImageIcon icon = new ImageIcon(piece_Controller.get_view().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
+
+                    // Rotate the icon if the board is rotated
+                    if (!isBoardRotated) {
+                        icon = rotateIcon(icon, Math.PI);
+                    }
+
                     square.setIcon(icon);
-                }
-                else {
+                } else {
                     square.setIcon(null);
                 }
             }
         }
-        
+    }
+
+    private static ImageIcon rotateIcon(ImageIcon icon, double angle) {
+        int w = icon.getIconWidth();
+        int h = icon.getIconHeight();
+
+        BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = (Graphics2D) image.getGraphics();
+        g2d.rotate(angle, w / 2, h / 2);
+        g2d.drawImage(icon.getImage(), 0, 0, null);
+        g2d.dispose();
+
+        return new ImageIcon(image);
     }
 
     // Initializes the pieces on the chess board.
@@ -186,6 +210,12 @@ public class ChessView extends JFrame {
 
             // Switch to the next player's turn
             currentPlayer = (currentPlayer == 1) ? 2 : 1;
+
+            // Update the turn label
+            turnLabel.setText("Current Turn: Player " + currentPlayer);
+
+            // Rotate the board
+            rotateBoard();
         }
 
 
@@ -193,6 +223,28 @@ public class ChessView extends JFrame {
         selected_piece_coords = null;
         UpdatePieces();
     }
+
+    private static void rotateBoard() {
+        Component[] components = boardPanel.getComponents();
+        boardPanel.removeAll();
+
+        if (isBoardRotated) {
+            for (int i = components.length - 1; i >= 0; i--) {
+                boardPanel.add(components[i]);
+            }
+        } else {
+            for (int i = components.length - 1; i >= 0; i--) {
+                boardPanel.add(components[i]);
+            }
+
+        }
+
+        isBoardRotated = !isBoardRotated;
+        boardPanel.revalidate();
+        boardPanel.repaint();
+    }
+
+
 
     // Displays the JFrame.
     public void showView() {
