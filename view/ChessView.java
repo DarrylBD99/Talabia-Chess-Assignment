@@ -25,10 +25,13 @@ public class ChessView extends JFrame {
     private static PieceController[][] board = new PieceController[ROWS][COLS];
     
     //hashmap for Darryl
-    private static HashMap<ChessSquare, int[]> coordinateHashMap = new HashMap<ChessSquare, int[]>();
+    private static HashMap<int[], ChessSquare> coordinateHashMap = new HashMap<int[], ChessSquare>();
 
     // Coordinates of Selected Piece
     public static int[] selected_piece_coords;
+    
+    // Thickness of the borders around the squares on the chess board.
+    static int thickness = 2;
 
     // Constructor for the ChessView class.
     public ChessView() {
@@ -49,13 +52,10 @@ public class ChessView extends JFrame {
 
         // Add the board panel to the JFrame.
         add(boardPanel);
-
     }
 
     // Initializes the graphical representation of the chess board.
     private void initializeBoard() {
-        // Thickness of the borders around the squares on the chess board.
-        int thickness = 2;
         boardPanel.setLayout(new GridLayout(ROWS, COLS));
 
         // Loop through each row and column to create labels representing chess squares.
@@ -68,15 +68,12 @@ public class ChessView extends JFrame {
 
                 // Set a border around the square for visualization.
                 square.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 153, 255), thickness));
-
+                square.setBackground(Color.WHITE);
                 // Set the icon of the label based on the piece present on the chess square.
                 Piece piece = getPiece(x, y);
                 if (piece != null && piece.getPieceType() != null) {
-                    ImageIcon icon = new ImageIcon(piece.getIcon().getImage().getScaledInstance(
-                            50, 50, Image.SCALE_SMOOTH));
+                    ImageIcon icon = new ImageIcon(piece.getIcon().getImage().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
                     square.setIcon(icon);
-                } else {
-                    square.setText("Empty");
                 }
 
                 // GridBagConstraints for proper positioning in the GridLayout.
@@ -91,15 +88,37 @@ public class ChessView extends JFrame {
                 square.addMouseListener(new ChessMouseListener(x,y));
 
                 //Add it to the hashmap
-                int[] coordinates = new int[2];
-                coordinates[0] = x;
-                coordinates[1] = y;
-                coordinateHashMap.put(square, coordinates);
-
+                int[] coords = {x, y};
+                coordinateHashMap.put(coords, square);
+                System.out.println(coords);
                 // Add the square label to the board panel.
                 boardPanel.add(square, gbc);
             }
         }
+
+        UpdatePieces();
+    }
+
+    static void UpdatePieces()
+    {
+        for (int y = 0; y < ROWS; y++)
+        {
+            for (int x = 0; x < COLS; x++)
+            {
+                ChessSquare square = get_square_from_coords(x, y);
+
+                // Set the icon of the label based on the piece present on the chess square.
+                Piece piece = getPiece(x, y);
+                if (piece != null && piece.getPieceType() != null) {
+                    ImageIcon icon = new ImageIcon(piece.getIcon().getImage().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
+                    square.setIcon(icon);
+                }
+                else {
+                    square.setIcon(null);
+                }
+            }
+        }
+        
     }
 
     // Initializes the pieces on the chess board.
@@ -160,21 +179,18 @@ public class ChessView extends JFrame {
 
     public static void move_piece(int x, int y, int new_x, int new_y)
     {
+        System.out.println(x + " " + y);
+        System.out.println(new_x + " " + new_y);
         if (board[y][x].checkValidMove(x, y, new_x, new_y))
         {
             board[new_y][new_x] = board[y][x];
             board[y][x] = null;
         }
 
-        for (Entry<ChessSquare, int[]> set : coordinateHashMap.entrySet())
-        {
-            if (set.getValue() == selected_piece_coords)
-            {
-                set.getKey().set_selected(false);
-                selected_piece_coords = null;
-                break;
-            }
-        }
+
+        get_square_from_coords(x, y).set_selected(false);
+        selected_piece_coords = null;
+        UpdatePieces();
     }
 
     // Displays the JFrame.
@@ -193,32 +209,40 @@ public class ChessView extends JFrame {
         return board[y][x].model;
     }
 
+    public static ChessSquare get_square_from_coords(int x, int y)
+    {
+        int x_curr, y_curr;
+        for (Entry<int[], ChessView.ChessSquare> set : coordinateHashMap.entrySet())
+        {
+            x_curr = set.getKey()[0];
+            y_curr = set.getKey()[1];
+            if (x == x_curr && y == y_curr) return set.getValue();
+        }
+
+        return null;
+    }
+
     // Inner class to handle mouse events.
     private class ChessMouseListener implements MouseListener {
-        private int x;
-        private int y;
+        private int[] coords;
 
         public ChessMouseListener(int x, int y) {
-            this.x = x;
-            this.y = y;
+            int[] coords = {x, y};
+            this.coords = coords;
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
             if (ChessView.selected_piece_coords != null)
-                ChessView.move_piece(ChessView.selected_piece_coords[0], ChessView.selected_piece_coords[1], x, y);
-            else if (ChessView.getPiece(x, y) != null)
+            {
+                ChessView.move_piece(ChessView.selected_piece_coords[0], ChessView.selected_piece_coords[1], coords[0], coords[1]);
+            }
+            else if (ChessView.getPiece(coords[0], coords[1]) != null)
             {
                 ChessSquare button = (ChessSquare) e.getSource();
                 button.set_selected(!button.get_selected());
 
-                if (button.get_selected())
-                {
-                    ChessView.selected_piece_coords = new int[2];
-                    ChessView.selected_piece_coords[0] = x;
-                    ChessView.selected_piece_coords[1] = y;
-                }
-                else ChessView.selected_piece_coords = null;
+                ChessView.selected_piece_coords = (button.get_selected()) ? coords : null;
             }
         }
 
@@ -248,7 +272,11 @@ public class ChessView extends JFrame {
         private boolean selected = false;
 
         public boolean get_selected() { return selected; }
-        public void set_selected(boolean value) { selected = value; }
+        public void set_selected(boolean value) {
+            selected = value;
+            Color background = (value) ? Color.RED : Color.WHITE;
+            setBackground(background);
+        }
     }
 
     // Main method to create and show the ChessView instance.
