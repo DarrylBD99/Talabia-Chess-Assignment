@@ -1,3 +1,4 @@
+import java.awt.*;
 public abstract class PieceController implements Cloneable {
     // declaring the variables model and view  
     protected Piece model;
@@ -54,5 +55,10 @@ public abstract class PieceController implements Cloneable {
             // Throw a runtime exception if cloning is not supported.
             throw new RuntimeException("Clone not supported for " + this.getClass());
         }
+    }
+
+    public Image get_view()
+    {
+        return view.getIcon().getImage();
     }
 }

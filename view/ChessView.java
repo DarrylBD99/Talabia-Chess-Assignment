@@ -69,12 +69,6 @@ public class ChessView extends JFrame {
                 // Set a border around the square for visualization.
                 square.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 153, 255), thickness));
                 square.setBackground(Color.WHITE);
-                // Set the icon of the label based on the piece present on the chess square.
-                Piece piece = getPiece(x, y);
-                if (piece != null && piece.getPieceType() != null) {
-                    ImageIcon icon = new ImageIcon(piece.getIcon().getImage().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
-                    square.setIcon(icon);
-                }
 
                 // GridBagConstraints for proper positioning in the GridLayout.
                 GridBagConstraints gbc = new GridBagConstraints();
@@ -108,9 +102,10 @@ public class ChessView extends JFrame {
                 ChessSquare square = get_square_from_coords(x, y);
 
                 // Set the icon of the label based on the piece present on the chess square.
+                PieceController piece_Controller = board[y][x];
                 Piece piece = getPiece(x, y);
                 if (piece != null && piece.getPieceType() != null) {
-                    ImageIcon icon = new ImageIcon(piece.getIcon().getImage().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
+                    ImageIcon icon = new ImageIcon(piece_Controller.get_view().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
                     square.setIcon(icon);
                 }
                 else {
@@ -150,7 +145,7 @@ public class ChessView extends JFrame {
                         Piece model = new Piece();
                         model.setPlayerIndex(playerIndex, pieceRow_type[x]);
 
-                        PieceView view = new PieceView();
+                        PieceView view = new PieceView(model);
 
                         // Create a PieceController and associate it with the model and view.
                         pieceRow[x] = PieceController.get_piece_controller(model, view);
@@ -165,7 +160,7 @@ public class ChessView extends JFrame {
                         System.out.println("Initialized piece at (" + x + ", " + y + ")");
                         System.out.println("Player Index: " + pieceRow[x].model.getPlayerIndex());
                         System.out.println("Piece Type: " + pieceRow[x].model.getPieceType());
-                        System.out.println("Icon: " + pieceRow[x].model.getIcon());
+                        System.out.println("Icon: " + pieceRow[x].get_view());
                     } else {
                         System.out.println("PieceController is null for piece at (" + x + ", " + y + ") - PieceType: " + pieceRow_type[x]);
                     }
