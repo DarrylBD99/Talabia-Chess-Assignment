@@ -20,7 +20,7 @@ public class HourGlassController extends PieceController {
             if ((xDistance == move_1 && yDistance == move_2) || (xDistance == move_2 && yDistance == move_1)) {
                 // Check if the destination is occupied by another piece of the same player
                 Piece destinationPiece = ChessView.getPiece(end_x, end_y);
-                return destinationPiece == null || destinationPiece.getPlayerIndex() != model.getPlayerIndex();
+                return destinationPiece == null;
             }
         }
         return false;

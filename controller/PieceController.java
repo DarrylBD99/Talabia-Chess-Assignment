@@ -2,7 +2,7 @@ import java.awt.*;
 public abstract class PieceController implements Cloneable {
     // declaring the variables model and view  
     protected Piece model;
-    private PieceView view;
+    protected PieceView view;
     
     static PieceController get_piece_controller(Piece model, PieceView view)
     {
@@ -36,6 +36,10 @@ public abstract class PieceController implements Cloneable {
     boolean checkValidMove(int startX, int startY, int endX, int endY) {
         // Check if the move is within the board boundaries.
         if (endX < 0 || endX >= ChessView.COLS || endY < 0 || endY >= ChessView.ROWS) return false;
+        // Check if piece has the same player index.
+        Piece destinationPiece = ChessView.getPiece(endX, endY);
+        if (destinationPiece != null && destinationPiece.getPlayerIndex() == model.getPlayerIndex()) return false;
+
         // Check if the move is either horizontal or vertical.
         return startX != endX || startY != endY;
     }
@@ -59,6 +63,6 @@ public abstract class PieceController implements Cloneable {
 
     public Image get_view()
     {
-        return view.getIcon().getImage();
+        return view.icon.getImage();
     }
 }
