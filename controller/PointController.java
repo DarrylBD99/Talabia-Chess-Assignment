@@ -1,5 +1,3 @@
-import javax.swing.ImageIcon;
-
 public class PointController extends PieceController {
     boolean has_reached_end = false;
     boolean played_first_move = false;
