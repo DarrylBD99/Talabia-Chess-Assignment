@@ -1,4 +1,5 @@
 import javax.swing.ImageIcon;
+import java.net.URL;
 
 // Abstract class representing a generic chess piece.
 public class Piece {
@@ -33,7 +34,7 @@ public class Piece {
         this.pieceType = pieceType;
 
         // Set the icon based on playerIndex and pieceType.
-        String imagePath = getImagePath(playerIndex, pieceType);
+        URL imagePath = getImagePath(playerIndex, pieceType);
         icon = new ImageIcon(imagePath);
 
         // Print information about the loaded image.
@@ -43,10 +44,11 @@ public class Piece {
     }
 
     // Helper method to generate the image path for the piece.
-    private String getImagePath(int playerIndex, PieceType pieceType) {
+    private URL getImagePath(int playerIndex, PieceType pieceType) {
         // Define the base path as a constant or configuration option.
-        String basePath = "src/model/resources";
+        String path = String.format("resources/%d/%s.png", playerIndex, pieceType.toString().toLowerCase());
+        URL ret = getClass().getResource(path);
         // Construct the full image path.
-        return String.format("%s/%d/%s.png", basePath, playerIndex, pieceType.toString().toLowerCase());
+        return ret;
     }
 }
