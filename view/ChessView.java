@@ -33,6 +33,9 @@ public class ChessView extends JFrame {
     // Thickness of the borders around the squares on the chess board.
     static int thickness = 2;
 
+    static int currentPlayer = 1; // Initialize with Player 1
+
+
     // Constructor for the ChessView class.
     public ChessView() {
         // Set the title of the JFrame.
@@ -180,6 +183,9 @@ public class ChessView extends JFrame {
         {
             board[new_y][new_x] = board[y][x];
             board[y][x] = null;
+
+            // Switch to the next player's turn
+            currentPlayer = (currentPlayer == 1) ? 2 : 1;
         }
 
 
