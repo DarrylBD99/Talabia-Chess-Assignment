@@ -34,6 +34,13 @@ public abstract class PieceController implements Cloneable {
 
     // Checks if a move from the starting coordinates to the ending coordinates is valid.
     boolean checkValidMove(int startX, int startY, int endX, int endY) {
+
+        // Check if it's the current player's turn
+        if (model.getPlayerIndex() != ChessView.currentPlayer) {
+            System.out.println("Not your turn!");
+            return false;
+        }
+
         // Check if the move is within the board boundaries.
         if (endX < 0 || endX >= ChessView.COLS || endY < 0 || endY >= ChessView.ROWS) return false;
         // Check if piece has the same player index.
@@ -42,6 +49,7 @@ public abstract class PieceController implements Cloneable {
 
         // Check if the move is either horizontal or vertical.
         return startX != endX || startY != endY;
+
     }
 
     public PieceController(Piece model, PieceView view)
