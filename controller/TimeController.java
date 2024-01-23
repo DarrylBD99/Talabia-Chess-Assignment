@@ -1,4 +1,3 @@
-import java.awt.Color;
 public class TimeController extends PieceController {
 
     public TimeController(Piece model, PieceView view) {

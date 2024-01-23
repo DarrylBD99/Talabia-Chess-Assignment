@@ -1,5 +1,6 @@
-import java.awt.Color;
 public class HourGlassController extends PieceController {
+    static final int move_1 = 1;
+    static final int move_2 = 2;
 
     public HourGlassController(Piece model, PieceView view) {
         super(model, view);
@@ -13,8 +14,10 @@ public class HourGlassController extends PieceController {
             // Check if the move is a valid 3x2 L shape
             int xDistance = Math.abs(end_x - start_x);
             int yDistance = Math.abs(end_y - start_y);
+            System.out.println(xDistance);
+            System.out.println(yDistance);
 
-            if ((xDistance == 2 && yDistance == 3) || (xDistance == 3 && yDistance == 2)) {
+            if ((xDistance == move_1 && yDistance == move_2) || (xDistance == move_2 && yDistance == move_1)) {
                 // Check if the destination is occupied by another piece of the same player
                 Piece destinationPiece = ChessView.getPiece(end_x, end_y);
                 return destinationPiece == null || destinationPiece.getPlayerIndex() != model.getPlayerIndex();

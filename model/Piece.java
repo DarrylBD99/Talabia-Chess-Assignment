@@ -38,7 +38,7 @@ public class Piece {
         icon = new ImageIcon(imagePath);
 
         // Print information about the loaded image.
-        System.out.println("Image path: " + imagePath);
+        System.out.println("Image path: " + imagePath); 
         System.out.println("Icon width: " + icon.getIconWidth());
         System.out.println("Icon height: " + icon.getIconHeight());
     }

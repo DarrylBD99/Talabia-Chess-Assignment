@@ -34,9 +34,9 @@ public abstract class PieceController implements Cloneable {
     // Checks if a move from the starting coordinates to the ending coordinates is valid.
     boolean checkValidMove(int startX, int startY, int endX, int endY) {
         // Check if the move is within the board boundaries.
-        if (endX < 0 || endX >= ChessView.ROWS || endY < 0 || endY >= ChessView.COLS) return false;
+        if (endX < 0 || endX >= ChessView.COLS || endY < 0 || endY >= ChessView.ROWS) return false;
         // Check if the move is either horizontal or vertical.
-        return !(startX != endX && startY != endY);
+        return startX != endX || startY != endY;
     }
 
     public PieceController(Piece model, PieceView view)
