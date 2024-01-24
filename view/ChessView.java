@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.*;
@@ -42,7 +44,7 @@ public class ChessView extends JFrame {
     private static JLabel turnLabel; // JLabel to display the current player's turn
 
     private static JLabel notifLabel; // JLabel to display the notifications of the game
-
+    private static JButton returnMenu; // JLabel to return to main menu
 
     // Constructor for the ChessView class.
     public ChessView() {
@@ -53,6 +55,9 @@ public class ChessView extends JFrame {
         // Set the size of the JFrame.
         setSize(700, 600);
 
+        // Create a panel for the chess board using a BorderLayout.
+        JPanel mainPanel = new JPanel(new BorderLayout());
+
         // Create a panel for the chess board using a GridLayout.
         boardPanel = new JPanel(new GridLayout(ROWS, COLS));
 
@@ -61,23 +66,49 @@ public class ChessView extends JFrame {
         // Initialize the graphical representation of the chess board.
         initializeBoard();
 
-        // Add the board panel to the JFrame.
-        add(boardPanel);
+        // Add the board panel to the main panel in the center.
+        mainPanel.add(boardPanel, BorderLayout.CENTER);
 
         // Initialize the JLabel for turn information
         turnLabel = new JLabel("Current Turn: Player " + currentPlayer);
         turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        add(turnLabel, BorderLayout.SOUTH); // Add it to the bottom of the JFrame
+
+        // Add the "Return to Main Menu" button under the turn label
+        returnMenu = new JButton("Return to Main Menu");
+        returnMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Close the current chess game
+                dispose();
+
+                // Launch the main menu
+                SwingUtilities.invokeLater(() -> {
+                    MainMenu mainMenu = new MainMenu();
+                    mainMenu.setVisible(true);
+                });
+            }
+        });
+
+        // Create a panel for turnLabel and returnMenu in the south.
+        JPanel southPanel = new JPanel(new GridLayout(2, 1));
+        southPanel.add(turnLabel);
+        southPanel.add(returnMenu);
+
+        // Add the south panel to the main panel in the south.
+        mainPanel.add(southPanel, BorderLayout.SOUTH);
 
         // Initialize the JLabel for game information
         notifLabel = new JLabel("");
         notifLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        add(notifLabel, BorderLayout.NORTH); // Add it to the top of the JFrame
 
+        // Add the notifLabel to the main panel in the north.
+        mainPanel.add(notifLabel, BorderLayout.NORTH);
+
+        // Add the main panel to the JFrame.
+        add(mainPanel);
     }
-
     // Initializes the graphical representation of the chess board.
-    private void initializeBoard() {
+    void initializeBoard() {
         boardPanel.setLayout(new GridLayout(ROWS, COLS));
 
         // Loop through each row and column to create labels representing chess squares.
@@ -207,7 +238,6 @@ public class ChessView extends JFrame {
     public static void move_piece(int x, int y, int new_x, int new_y) {
 //        System.out.println(x + " " + y);
 //        System.out.println(new_x + " " + new_y);
-        System.out.println("Player " + currentPlayer + " moves piece: ");
 
         Piece piece = getPiece(x, y);
         if (piece != null) {
@@ -221,8 +251,7 @@ public class ChessView extends JFrame {
             board[y][x] = null;
 
             notifLabel.setText("Player " + currentPlayer + " moves piece: " + piece.getPieceType());
-
-            System.out.println("  Piece: " + piece.getPieceType());
+            System.out.println("Player " + currentPlayer + " moves piece: " + piece.getPieceType());
             System.out.println("  Old Position: (" + x + ", " + y + ")");
             System.out.println("  New Position: (" + new_x + ", " + new_y + ")");
 
