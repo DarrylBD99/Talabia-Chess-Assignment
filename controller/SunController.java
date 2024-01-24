@@ -16,9 +16,7 @@ public class SunController extends PieceController {
                 return false;
             }
 
-            // Check if the destination is occupied by another piece of the same player
-            Piece destinationPiece = ChessView.getPiece(end_x, end_y);
-            return destinationPiece == null;
+            return true;
         }
         
         return false;
