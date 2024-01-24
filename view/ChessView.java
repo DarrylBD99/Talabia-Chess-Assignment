@@ -116,12 +116,6 @@ public class ChessView extends JFrame {
                 Piece piece = getPiece(x, y);
                 if (piece != null && piece.getPieceType() != null) {
                     ImageIcon icon = new ImageIcon(piece_Controller.get_view().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
-
-                    // Rotate the icon if the board is rotated
-                    if (!isBoardRotated) {
-                        icon = rotateIcon(icon, Math.PI);
-                    }
-
                     square.setIcon(icon);
                 } else {
                     square.setIcon(null);
@@ -130,17 +124,21 @@ public class ChessView extends JFrame {
         }
     }
 
-    private static ImageIcon rotateIcon(ImageIcon icon, double angle) {
-        int w = icon.getIconWidth();
-        int h = icon.getIconHeight();
-
-        BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = (Graphics2D) image.getGraphics();
-        g2d.rotate(angle, w / 2, h / 2);
-        g2d.drawImage(icon.getImage(), 0, 0, null);
-        g2d.dispose();
-
-        return new ImageIcon(image);
+    static void RotateAllPieces() {
+        for (int y = 0; y < ROWS; y++) {
+            for (int x = 0; x < COLS; x++) {
+                // Set the icon of the label based on the piece present on the chess square.
+                PieceController piece_Controller = board[y][x];
+                Piece piece = getPiece(x, y);
+                
+                // Rotate the icon if the board is rotated
+                if (piece != null)
+                {
+                    System.out.println(piece.getPieceType());
+                    piece_Controller.rotateIcon(Math.PI);
+                }
+            }
+        }
     }
 
     // Initializes the pieces on the chess board.
@@ -240,6 +238,7 @@ public class ChessView extends JFrame {
         }
 
         isBoardRotated = !isBoardRotated;
+        RotateAllPieces();
         boardPanel.revalidate();
         boardPanel.repaint();
     }
