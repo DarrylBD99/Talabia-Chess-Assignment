@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -112,10 +110,9 @@ public class ChessView extends JFrame {
                 ChessSquare square = get_square_from_coords(x, y);
 
                 // Set the icon of the label based on the piece present on the chess square.
-                PieceController piece_Controller = board[y][x];
                 Piece piece = getPiece(x, y);
                 if (piece != null && piece.getPieceType() != null) {
-                    ImageIcon icon = new ImageIcon(piece_Controller.get_view().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
+                    ImageIcon icon = new ImageIcon(board[y][x].get_view().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
                     square.setIcon(icon);
                 } else {
                     square.setIcon(null);
@@ -128,15 +125,10 @@ public class ChessView extends JFrame {
         for (int y = 0; y < ROWS; y++) {
             for (int x = 0; x < COLS; x++) {
                 // Set the icon of the label based on the piece present on the chess square.
-                PieceController piece_Controller = board[y][x];
                 Piece piece = getPiece(x, y);
                 
-                // Rotate the icon if the board is rotated
-                if (piece != null)
-                {
-                    System.out.println(piece.getPieceType());
-                    piece_Controller.rotateIcon(Math.PI);
-                }
+                // Rotate the icon
+                if (piece != null) board[y][x].rotateIcon(Math.PI);
             }
         }
     }
