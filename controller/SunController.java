@@ -2,7 +2,8 @@ public class SunController extends PieceController {
 
     public SunController(Piece model, PieceView view) {
         super(model, view);
-        //TODO Auto-generated constructor stub
+        int index = model.getPlayerIndex() - 1;
+        ChessView.sun_pieces[index] = model;
     }
 
     @Override

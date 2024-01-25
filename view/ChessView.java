@@ -267,6 +267,21 @@ public class ChessView extends JFrame {
         switch_turn_check = switch_turn_check % 2;
     }
 
+    static boolean check_win_condition()
+    {
+        int index = (currentPlayer + 1) % 2;
+
+        for (int y = 0; y < ROWS; y++)
+        {
+            for (int x = 0; x < COLS; x++)
+            {
+                if (getPiece(x, y) == sun_pieces[index]) return false;
+            }
+        }
+
+        return true;
+    }
+
     // Move a chess piece to a new position on the board.
     public static void move_piece(int x, int y, int new_x, int new_y) {
 //        System.out.println(x + " " + y);
@@ -287,6 +302,12 @@ public class ChessView extends JFrame {
             System.out.println("Player " + currentPlayer + " moves piece: " + piece.getPieceType());
             System.out.println("  Old Position: (" + x + ", " + y + ")");
             System.out.println("  New Position: (" + new_x + ", " + new_y + ")");
+
+            // Check if player has won
+            if (check_win_condition())
+            {
+                // insert player win code
+            }
 
             // Switch to the next player's turn
             currentPlayer = (currentPlayer % 2) + 1;
