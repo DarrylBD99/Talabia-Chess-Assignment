@@ -45,7 +45,7 @@ public class ChessView extends JFrame {
     static Piece[] sun_pieces = new Piece[2];
 
     // Variable to keep track of the rotation state of the board.
-    static boolean isBoardRotated = true; // Keep track of the rotation state
+    static boolean isBoardRotated = false; // Keep track of the rotation state
 
     private static JLabel turnLabel; // JLabel to display the current player's turn
 
@@ -238,9 +238,33 @@ public class ChessView extends JFrame {
                 board[y] = pieceRow;
             }
         }
-        int x_middle_coords = COLS / 2;
-        sun_pieces[0] = getPiece(ROWS - 1, x_middle_coords);
-        sun_pieces[1] = getPiece(ROWS - 1, 0);
+    }
+
+    public static void timer_plus_swap() {
+        for (int y = 0; y < ROWS; y++)
+        {
+            for (int x = 0; x < COLS; x++)
+            {
+                Piece piece = getPiece(x, y);
+                if (piece != null)
+                {
+                    Piece piece_new = new Piece();
+    
+                    if (piece.getPieceType() == PieceType.TIME) piece_new.setPlayerIndex(piece.getPlayerIndex(), PieceType.PLUS);
+                    if (piece.getPieceType() == PieceType.PLUS) piece_new.setPlayerIndex(piece.getPlayerIndex(), PieceType.TIME);
+
+                    if (piece_new.getPieceType() != null)
+                    {
+                        PieceView view = new PieceView(piece_new);
+                        board[y][x] = PieceController.get_piece_controller(piece_new, view);
+                        if (isBoardRotated) board[y][x].rotateIcon(Math.PI);
+                    }
+                }
+
+            }
+        }
+
+        switch_turn_check = switch_turn_check % 2;
     }
 
     // Move a chess piece to a new position on the board.
@@ -265,7 +289,11 @@ public class ChessView extends JFrame {
             System.out.println("  New Position: (" + new_x + ", " + new_y + ")");
 
             // Switch to the next player's turn
-            currentPlayer = (currentPlayer == 1) ? 2 : 1;
+            currentPlayer = (currentPlayer % 2) + 1;
+            
+            // checks if timer and plus pieces need to be switched
+            if (currentPlayer == 1) switch_turn_check++;
+            if (switch_turn_check >= 2) timer_plus_swap();
 
             // Update the turn label
             turnLabel.setText("Current Turn: Player " + currentPlayer);
