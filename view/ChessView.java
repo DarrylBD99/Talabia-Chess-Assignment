@@ -35,8 +35,14 @@ public class ChessView extends JFrame {
     // Thickness of the borders around the squares on the chess board.
     static int thickness = 2;
 
+    // Variable counter that checks if plus and timer piece should switch
+    static int switch_turn_check = 0
+
     // Variable to keep track of the current player.
     static int currentPlayer = 1; // Initialize with Player 1
+
+    // Variables that contains the Sun Pieces of both players. 
+    static Piece[] sun_pieces = new Piece[2];
 
     // Variable to keep track of the rotation state of the board.
     static boolean isBoardRotated = true; // Keep track of the rotation state
@@ -232,6 +238,9 @@ public class ChessView extends JFrame {
                 board[y] = pieceRow;
             }
         }
+        int x_middle_coords = COLS / 2
+        sun_pieces[0] = getPiece(ROWS - 1, x_middle_coords)
+        sun_pieces[1] = getPiece(ROWS - 1, 0)
     }
 
     // Move a chess piece to a new position on the board.
