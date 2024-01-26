@@ -74,6 +74,11 @@ public abstract class PieceController implements Cloneable {
         return view.icon.getImage();
     }
 
+    public Piece get_model()
+    {
+        return model;
+    }
+
     public void rotateIcon(double angle) {
         view.rotateIcon(angle);
 	}
