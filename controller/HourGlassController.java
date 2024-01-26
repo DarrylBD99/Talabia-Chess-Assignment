@@ -2,13 +2,13 @@ public class HourGlassController extends PieceController {
     static final int move_1 = 1;
     static final int move_2 = 2;
 
-    public HourGlassController(Piece model, PieceView view) {
-        super(model, view);
+    public HourGlassController(Piece model) {
+        super(model);
         //TODO Auto-generated constructor stub
     }
 
     @Override
-    boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
+    public boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
         if (super.checkValidMove(start_x, start_y, end_x, end_y))
         {
             // Check if the move is a valid 3x2 L shape

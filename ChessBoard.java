@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 // Represents the main graphical user interface for the chess game.
-public class ChessView extends JFrame {
+public class ChessBoard extends JFrame {
     // Number of rows on the chess board.
     public static final int ROWS = 6;
     // Number of columns on the chess board.
@@ -18,8 +18,28 @@ public class ChessView extends JFrame {
     private static final int squareSize = 50;
 
     // Arrays representing the initial arrangement of pieces on the front and back rows.
-    private static final PieceType[] ROW_FORMAT_FRONT = {PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT};
-    private static final PieceType[] ROW_FORMAT_BACK = {PieceType.PLUS, PieceType.HOURGLASS, PieceType.TIME, PieceType.SUN, PieceType.TIME, PieceType.HOURGLASS, PieceType.PLUS};
+    private static final PieceController[] ROW_FORMAT_FRONT = {
+        PieceFactory.get_point_controller(),
+        PieceFactory.get_point_controller(),
+        PieceFactory.get_point_controller(),
+        PieceFactory.get_point_controller(),
+        PieceFactory.get_point_controller(),
+        PieceFactory.get_point_controller(),
+        PieceFactory.get_point_controller()
+    };
+    
+    private static final PieceController[] ROW_FORMAT_BACK = {
+        PieceFactory.get_plus_controller(),
+        PieceFactory.get_hourglass_controller(),
+        PieceFactory.get_time_controller(),
+        PieceFactory.get_sun_controller(),
+        PieceFactory.get_time_controller(),
+        PieceFactory.get_hourglass_controller(),
+        PieceFactory.get_plus_controller()
+    };
+
+    // Array representing the types of pieces that can change after switch_turn_check is reset.
+    private static final PieceType[] REPLACABLE_PIECE_TYPE = {PieceType.TIME, PieceType.PLUS};
 
     // Thickness of the borders around the squares on the chess board.
     private static final int THICKNESS = 2;
@@ -40,10 +60,10 @@ public class ChessView extends JFrame {
     static int switch_turn_check;
 
     // Variable to keep track of the current player.
-    static int currentPlayer; // Initialize with Player 1
+    public static int currentPlayer; // Initialize with Player 1
 
     // Variables that contains the Sun Pieces of both players. 
-    static Piece[] sun_pieces;
+    public static Piece[] sun_pieces;
 
     // Variable to keep track of the rotation state of the board.
     static boolean isBoardRotated; // Keep track of the rotation state
@@ -54,7 +74,7 @@ public class ChessView extends JFrame {
     private static JButton returnMenu; // JLabel to return to main menu
 
     // Constructor for the ChessView class.
-    public ChessView() {
+    public ChessBoard() {
         // Set the title of the JFrame.
         setTitle("Talabia Chess");
         // Close the application when the JFrame is closed.
@@ -171,7 +191,7 @@ public class ChessView extends JFrame {
 
                 // Set the icon of the label based on the piece present on the chess square.
                 Piece piece = getPiece(x, y);
-                if (piece != null && piece.getPieceType() != null) {
+                if (piece != null && board[y][x].get_view() != null) {
                     ImageIcon icon = new ImageIcon(board[y][x].get_view().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
                     square.setIcon(icon);
                 } else {
@@ -198,60 +218,50 @@ public class ChessView extends JFrame {
     // Initializes the pieces on the chess board.
     static void initializePieces() {
         for (int y = 0; y < ROWS; y++) {
-            // Create an array to represent a row of pieces.
-            PieceType[] pieceRow_type = new PieceType[COLS];
-            
-            PieceController[][] pieces = SaveLoadController.loadGame();
+            // Checks if has existing save
+            PieceController[][] pieces = SaveLoad.loadGame();
             if (pieces != null) {
                 board = pieces;
                 return;
             }
+            
+            // Create an array to represent a row of pieces.
+            PieceController[] piece_row = new PieceController[COLS];
+            
             // Determine whether the row is on the front or back based on its index.
-            if (y == 0 || y == (ROWS - 1)) {
-                // Initialize a new array with copies of elements from row_format_back.
-                pieceRow_type = Arrays.copyOf(ROW_FORMAT_BACK, ROW_FORMAT_BACK.length);
-            } else if (y == 1 || y == (ROWS - 2)) {
-                // Initialize a new array with copies of elements from row_format_front.
-                pieceRow_type = Arrays.copyOf(ROW_FORMAT_FRONT, ROW_FORMAT_FRONT.length);
+            if (y == 0 || y == (ROWS - 1))
+            {
+                // Initialize a new array with copies of elements from ROW_FORMAT_BACK.
+                for (int i = 0; i < ROW_FORMAT_BACK.length; i++)
+                    piece_row[i] = ROW_FORMAT_BACK[i].clone();
             }
-
+            else if (y == 1 || y == (ROWS - 2))
+            {
+                // Initialize a new array with copies of elements from ROW_FORMAT_FRONT.
+                for (int i = 0; i < ROW_FORMAT_FRONT.length; i++)
+                    piece_row[i] = ROW_FORMAT_FRONT[i].clone();
+            }
             // Check if the pieceRow has elements.
-            if (pieceRow_type.length > 0) {
+            if (piece_row.length > 0) {
                 // Determine the player index based on the row's position on the board.
                 int playerIndex = (y >= ROWS / 2) ? 1 : 2;
 
-                // Loop through each piece in the row.
-                PieceController[] pieceRow = new PieceController[COLS];
-
-                for (int x = 0; x < pieceRow.length; x++) {
-                    if (pieceRow_type[x] != null) {
-                        // Set the player index and piece type based on the actual type of the piece.
-                        Piece model = new Piece();
-                        model.setPlayerIndex(playerIndex, pieceRow_type[x]);
-
-                        PieceView view = new PieceView(model);
-
-                        // Create a PieceController and associate it with the model and view.
-                        pieceRow[x] = PieceController.get_piece_controller(model, view);
-
-                        // Check if the PieceController is not null before cloning.
-                        if (pieceRow[x] != null) {
-                            // Clone the piece to avoid reference issues.
-                            pieceRow[x] = pieceRow[x].clone();
-                        }
+                for (int x = 0; x < piece_row.length; x++) {
+                    if (piece_row[x] != null) {
+                        piece_row[x].get_model().setPlayerIndex(playerIndex);
 
                         // Debug prints
                         System.out.println("Initialized piece at (" + x + ", " + y + ")");
-                        System.out.println("Player Index: " + pieceRow[x].model.getPlayerIndex());
-                        System.out.println("Piece Type: " + pieceRow[x].model.getPieceType());
-                        System.out.println("Icon: " + pieceRow[x].get_view());
+                        System.out.println("Player Index: " + piece_row[x].get_model().getPlayerIndex());
+                        System.out.println("Piece Type: " + piece_row[x].get_model().getPieceType());
+                        System.out.println("Icon: " + piece_row[x].get_view());
                     } else {
-                        System.out.println("PieceController is null for piece at (" + x + ", " + y + ") - PieceType: " + pieceRow_type[x]);
+                        System.out.println("PieceController is null for piece at (" + x + ", " + y + ") - PieceType: " + piece_row[x]);
                     }
                 }
 
                 // Set the row of pieces on the chess board.
-                board[y] = pieceRow;
+                board[y] = piece_row;
             }
         }
     }
@@ -264,17 +274,10 @@ public class ChessView extends JFrame {
                 Piece piece = getPiece(x, y);
                 if (piece != null)
                 {
-                    Piece piece_new = new Piece();
-    
-                    if (piece.getPieceType() == PieceType.TIME) piece_new.setPlayerIndex(piece.getPlayerIndex(), PieceType.PLUS);
-                    if (piece.getPieceType() == PieceType.PLUS) piece_new.setPlayerIndex(piece.getPlayerIndex(), PieceType.TIME);
+                    if (piece.getPieceType() == PieceType.TIME) board[y][x] = PieceFactory.get_plus_controller(piece.getPlayerIndex());
+                    if (piece.getPieceType() == PieceType.PLUS) board[y][x] = PieceFactory.get_time_controller(piece.getPlayerIndex());
 
-                    if (piece_new.getPieceType() != null)
-                    {
-                        PieceView view = new PieceView(piece_new);
-                        board[y][x] = PieceController.get_piece_controller(piece_new, view);
-                        if (isBoardRotated) board[y][x].rotateIcon(Math.PI);
-                    }
+                    if (Arrays.stream(REPLACABLE_PIECE_TYPE).anyMatch(piece.getPieceType()::equals) && isBoardRotated) board[y][x].rotateIcon(Math.PI);
                 }
 
             }
@@ -381,13 +384,13 @@ public class ChessView extends JFrame {
         // Check if the board position is not null before accessing the model.
         if (board[y][x] == null) return null;
 
-        return board[y][x].model;
+        return board[y][x].get_model();
     }
 
     // Retrieves the ChessSquare from the given coordinates on the chess board.
     public static ChessSquare get_square_from_coords(int x, int y) {
         int x_curr, y_curr;
-        for (Entry<int[], ChessView.ChessSquare> set : coordinateHashMap.entrySet()) {
+        for (Entry<int[], ChessBoard.ChessSquare> set : coordinateHashMap.entrySet()) {
             x_curr = set.getKey()[0];
             y_curr = set.getKey()[1];
             if (x == x_curr && y == y_curr) return set.getValue();
@@ -408,16 +411,16 @@ public class ChessView extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (ChessView.selected_piece_coords != null) {
+            if (ChessBoard.selected_piece_coords != null) {
                 // Move the piece if a piece is selected and the target square is valid.
-                ChessView.move_piece(ChessView.selected_piece_coords[0], ChessView.selected_piece_coords[1], coords[0], coords[1]);
-            } else if (ChessView.getPiece(coords[0], coords[1]) != null) {
+                ChessBoard.move_piece(ChessBoard.selected_piece_coords[0], ChessBoard.selected_piece_coords[1], coords[0], coords[1]);
+            } else if (ChessBoard.getPiece(coords[0], coords[1]) != null) {
                 // Select or deselect a piece based on the user's click.
                 ChessSquare button = (ChessSquare) e.getSource();
                 button.set_selected(!button.get_selected());
 
                 // Set the selected piece coordinates or null if no piece is selected.
-                ChessView.selected_piece_coords = (button.get_selected()) ? coords : null;
+                ChessBoard.selected_piece_coords = (button.get_selected()) ? coords : null;
             }
         }
 
@@ -460,15 +463,17 @@ public class ChessView extends JFrame {
             setBackground(background);
         }
     }
-
+    
+/*
     // Main method to create and show the ChessView instance.
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ChessView chessView = new ChessView();
+            ChessBoard chessView = new ChessBoard();
             // Initialize the pieces again (redundant call from the constructor).
             initializePieces();
             // Show the JFrame.
             chessView.showView();
         });
     }
+*/
 }

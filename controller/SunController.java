@@ -1,13 +1,12 @@
 public class SunController extends PieceController {
 
-    public SunController(Piece model, PieceView view) {
-        super(model, view);
-        int index = model.getPlayerIndex() - 1;
-        ChessView.sun_pieces[index] = model;
+    public SunController(Piece model) {
+        super(model);
+        //TODO Auto-generated constructor stub
     }
 
     @Override
-    boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
+    public boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
         if (super.checkValidMove(start_x, start_y, end_x, end_y))
         {
             // Check if the move is only one step in any direction

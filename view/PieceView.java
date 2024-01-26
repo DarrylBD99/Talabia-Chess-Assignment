@@ -1,13 +1,12 @@
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.net.URL;
+import java.io.IOException;
 
 public class PieceView {
-    BufferedImage original_image;
     ImageIcon icon;
-    URL image_url;
     
     public PieceView(Piece model)
     {
@@ -15,14 +14,24 @@ public class PieceView {
         PieceType pieceType = model.getPieceType();
 
         // Define the base path as a constant or configuration option.
-        String path = String.format("resources/%d/%s.png", playerIndex, pieceType.toString().toLowerCase());
-        image_url = getClass().getResource(path);
-        icon = new ImageIcon(image_url);
+        String path = String.format("/resources/%d/%s.png", playerIndex, pieceType.toString().toLowerCase());
+
+        try {
+            icon = new ImageIcon(ImageIO.read(getClass().getResource(path)));
+
+            if (model.getRotated()) rotateIcon(Math.PI);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
         // Print information about the loaded image.
-        System.out.println("Image path: " + image_url); 
-        System.out.println("Icon width: " + icon.getIconWidth());
-        System.out.println("Icon height: " + icon.getIconHeight());
+        System.out.println("Image path: " + path);
+        if (icon != null)
+        {
+            System.out.println("Icon width: " + icon.getIconWidth());
+            System.out.println("Icon height: " + icon.getIconHeight());
+        }
     }
 
     // Rotates Image Icon ()

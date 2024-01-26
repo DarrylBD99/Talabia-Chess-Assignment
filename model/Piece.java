@@ -1,26 +1,39 @@
 // Abstract class representing a generic chess piece.
 public class Piece {
     // Player index representing the owner of the piece.
-    protected int playerIndex;
+    private int playerIndex;
     // Type of the chess piece.
-    protected PieceType pieceType;
+    private PieceType pieceType;
+    // Checks if piece is rotated on board
+    private Boolean is_rotated = false;
 
     // Retrieves the player index of the piece.
-    int getPlayerIndex() {
+    public int getPlayerIndex() {
         return playerIndex;
     }
 
     // Retrieves the type of the piece.
-    PieceType getPieceType() {
+    public PieceType getPieceType() {
         return pieceType;
     }
 
-    // Sets the player index and piece type of the piece, and loads the corresponding icon.
-    void setPlayerIndex(int playerIndex, PieceType pieceType) {
-        // Validate playerIndex or pieceType if needed
+    // Retrieves the type of the piece.
+    public Boolean getRotated() {
+        return is_rotated;
+    }
 
-        // Set the player index and piece type.
+    // Sets the player index of the piece.
+    public void setPlayerIndex(int playerIndex) {
         this.playerIndex = playerIndex;
+    }
+
+    // Sets the piece type of the piece.
+    public void setPieceType(PieceType pieceType) {
         this.pieceType = pieceType;
+    }
+
+    // Sets the piece type of the piece.
+    public void setRotated(Boolean is_rotated) {
+        this.is_rotated = is_rotated;
     }
 }

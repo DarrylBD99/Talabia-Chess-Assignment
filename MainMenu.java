@@ -4,7 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenu extends JFrame {
-    ChessView chessView;
+    ChessBoard chessboard;
+
+
+    // Runs the board
+    void run_board()
+    {
+        chessboard = new ChessBoard();
+        chessboard.showView();
+    }
 
     public MainMenu() {
         setTitle("Talabia Chess");
@@ -26,11 +34,7 @@ public class MainMenu extends JFrame {
                 dispose();
 
                 // Launch the chess game
-                SwingUtilities.invokeLater(() -> {
-                    chessView = new ChessView();
-                    ChessView.initializePieces();
-                    chessView.showView();
-                });
+                SwingUtilities.invokeLater(() -> run_board());
             }
         });
 
