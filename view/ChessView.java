@@ -181,6 +181,7 @@ public class ChessView extends JFrame {
                 // Rotate the icon
                 if (piece != null) board[y][x].rotateIcon(Math.PI);
             }
+            
         }
     }
 
@@ -189,7 +190,12 @@ public class ChessView extends JFrame {
         for (int y = 0; y < ROWS; y++) {
             // Create an array to represent a row of pieces.
             PieceType[] pieceRow_type = new PieceType[COLS];
-
+            
+            PieceController[][] pieces = SaveLoadController.loadGame();
+            if (pieces != null) {
+                board = pieces;
+                return;
+            }
             // Determine whether the row is on the front or back based on its index.
             if (y == 0 || y == (ROWS - 1)) {
                 // Initialize a new array with copies of elements from row_format_back.
