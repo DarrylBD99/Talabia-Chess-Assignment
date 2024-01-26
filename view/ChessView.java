@@ -13,39 +13,40 @@ public class ChessView extends JFrame {
     public static final int ROWS = 6;
     // Number of columns on the chess board.
     public static final int COLS = 7;
-    // Panel that holds the chess board.
-    private static JPanel boardPanel;
 
     // Size of each square on the chessboard
     private static final int squareSize = 50;
 
     // Arrays representing the initial arrangement of pieces on the front and back rows.
-    private static final PieceType[] row_format_front = {PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT};
-    private static final PieceType[] row_format_back = {PieceType.PLUS, PieceType.HOURGLASS, PieceType.TIME, PieceType.SUN, PieceType.TIME, PieceType.HOURGLASS, PieceType.PLUS};
+    private static final PieceType[] ROW_FORMAT_FRONT = {PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT, PieceType.POINT};
+    private static final PieceType[] ROW_FORMAT_BACK = {PieceType.PLUS, PieceType.HOURGLASS, PieceType.TIME, PieceType.SUN, PieceType.TIME, PieceType.HOURGLASS, PieceType.PLUS};
+
+    // Thickness of the borders around the squares on the chess board.
+    private static final int THICKNESS = 2;
+
+    // Panel that holds the chess board.
+    private static JPanel boardPanel;
 
     // 2D array to represent the chess board and store pieces.
-    private static PieceController[][] board = new PieceController[ROWS][COLS];
+    private static PieceController[][] board;
 
     // Hashmap to store the coordinates of each square on the chessboard.
-    private static HashMap<int[], ChessSquare> coordinateHashMap = new HashMap<int[], ChessSquare>();
+    private static HashMap<int[], ChessSquare> coordinateHashMap;
 
     // Coordinates of Selected Piece
     public static int[] selected_piece_coords;
 
-    // Thickness of the borders around the squares on the chess board.
-    static int thickness = 2;
-
     // Variable counter that checks if plus and timer piece should switch
-    static int switch_turn_check = 0;
+    static int switch_turn_check;
 
     // Variable to keep track of the current player.
-    static int currentPlayer = 1; // Initialize with Player 1
+    static int currentPlayer; // Initialize with Player 1
 
     // Variables that contains the Sun Pieces of both players. 
-    static Piece[] sun_pieces = new Piece[2];
+    static Piece[] sun_pieces;
 
     // Variable to keep track of the rotation state of the board.
-    static boolean isBoardRotated = false; // Keep track of the rotation state
+    static boolean isBoardRotated; // Keep track of the rotation state
 
     private static JLabel turnLabel; // JLabel to display the current player's turn
 
@@ -63,6 +64,14 @@ public class ChessView extends JFrame {
 
         // Create a panel for the chess board using a BorderLayout.
         JPanel mainPanel = new JPanel(new BorderLayout());
+
+        //
+        board = new PieceController[ROWS][COLS];
+        coordinateHashMap = new HashMap<int[], ChessSquare>();
+        sun_pieces = new Piece[2];
+        isBoardRotated = false;
+        currentPlayer = 1;
+        switch_turn_check = 0;
 
         // Create a panel for the chess board using a GridLayout.
         boardPanel = new JPanel(new GridLayout(ROWS, COLS));
@@ -85,6 +94,7 @@ public class ChessView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Close the current chess game
+                boardPanel.removeAll();
                 dispose();
 
                 // Launch the main menu
@@ -126,7 +136,7 @@ public class ChessView extends JFrame {
                 square.setBackground(Color.WHITE);
 
                 // Set a border around the square for visualization.
-                square.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 153, 255), thickness));
+                square.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 153, 255), THICKNESS));
                 square.setBackground(Color.WHITE);
 
                 // GridBagConstraints for proper positioning in the GridLayout.
@@ -199,10 +209,10 @@ public class ChessView extends JFrame {
             // Determine whether the row is on the front or back based on its index.
             if (y == 0 || y == (ROWS - 1)) {
                 // Initialize a new array with copies of elements from row_format_back.
-                pieceRow_type = Arrays.copyOf(row_format_back, row_format_back.length);
+                pieceRow_type = Arrays.copyOf(ROW_FORMAT_BACK, ROW_FORMAT_BACK.length);
             } else if (y == 1 || y == (ROWS - 2)) {
                 // Initialize a new array with copies of elements from row_format_front.
-                pieceRow_type = Arrays.copyOf(row_format_front, row_format_front.length);
+                pieceRow_type = Arrays.copyOf(ROW_FORMAT_FRONT, ROW_FORMAT_FRONT.length);
             }
 
             // Check if the pieceRow has elements.
