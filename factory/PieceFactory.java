@@ -7,6 +7,36 @@ public abstract class PieceFactory{
         return ret;
     }
 
+
+    public static PieceController get_piece_controller(PieceType type, int index) {
+        Piece model = get_piece_model(type);
+        PieceController controller;
+    
+        switch (type) {
+            case HOURGLASS:
+                controller = new HourGlassController(model);
+                break;
+            case PLUS:
+                controller = new PlusController(model);
+                break;
+            case POINT:
+                controller = new PointController(model);
+                break;
+            case SUN:
+                controller = new SunController(model);
+                break;
+            case TIME:
+                controller = new TimeController(model);
+                break;
+            default:
+                // Handle the case where an unsupported piece type is provided.
+                throw new IllegalArgumentException("Unsupported piece type: " + type);
+        }
+    
+        // Set the player index
+        controller.get_model().setPlayerIndex(index);
+        return controller;
+    }
     public static PieceController get_hourglass_controller()
     {
         PieceType type = PieceType.HOURGLASS;
@@ -76,4 +106,10 @@ public abstract class PieceFactory{
         ret.get_model().setPlayerIndex(index);
         return ret;
     }
+
+    PieceController controller = PieceFactory.get_hourglass_controller();
+
+
+
+    
 }
