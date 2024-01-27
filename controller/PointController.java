@@ -1,6 +1,6 @@
 public class PointController extends PieceController {
-    boolean has_reached_end = false;
-    boolean played_first_move = false;
+    private boolean has_reached_end = false;
+    private boolean played_first_move = false;
 
     public PointController(Piece model) {
         super(model);
@@ -10,7 +10,7 @@ public class PointController extends PieceController {
     @Override
     public boolean checkValidMove(int start_x, int start_y, int end_x, int end_y) {
         // Check if the move is forward
-        int direction = ((model.getPlayerIndex() % 2) == 0) ? 1 : -1; // Adjust direction based on player
+        int direction = ((get_model().getPlayerIndex() % 2) == 0) ? 1 : -1; // Adjust direction based on player
         direction = ((has_reached_end) ? -direction : direction); 
         
         if (start_x != end_x) return false;
@@ -28,7 +28,7 @@ public class PointController extends PieceController {
             // Check if the Point piece has reached the end and needs to turn around
             if ((direction > 0 && end_y == ChessBoard.ROWS) || (direction < 0 && end_y == 0)) {
                 has_reached_end = !has_reached_end;
-                model.setRotated(!model.getRotated());
+                get_model().setRotated(!get_model().getRotated());
             }
             played_first_move = true;
             return true;

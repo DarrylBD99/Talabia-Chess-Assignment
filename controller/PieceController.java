@@ -2,8 +2,8 @@ import java.awt.*;
 
 public abstract class PieceController implements Cloneable {
     // declaring the variables model and view  
-    protected Piece model;
-    protected PieceView view;
+    private Piece model;
+    private PieceView view;
 
     // Checks if a move from the starting coordinates to the ending coordinates is valid.
     public boolean checkValidMove(int startX, int startY, int endX, int endY) {

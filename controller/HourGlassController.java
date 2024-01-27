@@ -1,6 +1,6 @@
 public class HourGlassController extends PieceController {
-    static final int move_1 = 1;
-    static final int move_2 = 2;
+    private static final int MOVE_1 = 1;
+    private static final int MOVE_2 = 2;
 
     public HourGlassController(Piece model) {
         super(model);
@@ -17,7 +17,7 @@ public class HourGlassController extends PieceController {
             System.out.println(xDistance);
             System.out.println(yDistance);
 
-            if ((xDistance == move_1 && yDistance == move_2) || (xDistance == move_2 && yDistance == move_1)) return true;
+            if ((xDistance == MOVE_1 && yDistance == MOVE_2) || (xDistance == MOVE_2 && yDistance == MOVE_1)) return true;
         }
         return false;
     }
