@@ -249,6 +249,11 @@ public class ChessBoard extends JFrame {
                 for (int x = 0; x < piece_row.length; x++) {
                     if (piece_row[x] != null) {
                         piece_row[x].get_model().setPlayerIndex(playerIndex);
+                        if (piece_row[x].get_model().getPieceType() == PieceType.SUN)
+                        {
+                            int index = piece_row[x].get_model().getPlayerIndex() - 1;
+                            sun_pieces[index] = piece_row[x].get_model();
+                        }
 
                         // Debug prints
                         System.out.println("Initialized piece at (" + x + ", " + y + ")");
