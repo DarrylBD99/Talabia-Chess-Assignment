@@ -26,9 +26,10 @@ public class PointController extends PieceController {
         if (super.checkValidMove(start_x, start_y, end_x, end_y))
         {
             // Check if the Point piece has reached the end and needs to turn around
-            if ((direction > 0 && end_y == ChessBoard.ROWS) || (direction < 0 && end_y == 0)) {
+            if ((direction > 0 && end_y == (ChessBoard.ROWS - 1)) || (direction < 0 && end_y == 0)) {
                 has_reached_end = !has_reached_end;
                 get_model().setRotated(!get_model().getRotated());
+                rotateIcon(Math.PI);
             }
             played_first_move = true;
             return true;
