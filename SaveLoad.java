@@ -8,7 +8,6 @@ public class SaveLoad {
     public static void saveGame(PieceController[][] pieces) {
         try {
             FileWriter writer = new FileWriter("game_save.txt");
-            // writer.write("index,type,x,y\n");
 
             for (int y = 0; y < pieces.length; y++) {
                 PieceController[] pieceRow = pieces[y];
@@ -16,13 +15,13 @@ public class SaveLoad {
                     Piece piece = pieceRow[x].get_model();
 
                     String[] data = {
-                        "index:" + piece.getPlayerIndex(),
-                        "type:" + piece.getPieceType().name(),
-                        "x:" + x, 
-                        "y:" + y
+                            "index:" + piece.getPlayerIndex(),
+                            "type:" + piece.getPieceType().name(),
+                            "x:" + x,
+                            "y:" + y
                     };
 
-                    writer.write(String.join(",", data)  + "\n");
+                    writer.write(String.join(",", data) + "\n");
                 }
             }
 
@@ -35,36 +34,37 @@ public class SaveLoad {
     public static PieceController[][] loadGame() {
         File file = new File("game_save.txt");
         if (!file.exists()) {
-            return null;    
+            return null;
         }
-    
-        PieceController[][] pieces = new PieceController[8][8]; // Assuming an 8x8 board
-    
+
+        PieceController[][] pieces = new PieceController[7][6]; // Assuming an 8x8 board
+
         try {
             FileReader reader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(reader);
             String line;
-    
+
             while ((line = bufferedReader.readLine()) != null) {
                 String[] data = line.split(",");
-                int playerIndex = Integer.parseInt(data[0].split(":")[1]);
-                PieceType pieceType = PieceType.valueOf(data[1].split(":")[1]);
-                int x = Integer.parseInt(data[2].split(":")[1]);
-                int y = Integer.parseInt(data[3].split(":")[1]);
-    
-                // Create and deserialize the piece using playerIndex and pieceType
-                Piece model = new Piece();
-                model.setPlayerIndex(playerIndex);
 
-                // Create a PieceController and associate it with the model and view.
-                //pieces[y][x] = PieceController.get_piece_controller(model);
+                int playerIndex = Integer.parseInt(parseData(data[0]));
+                PieceType pieceType = PieceType.valueOf(parseData(data[1]));
+                int x = Integer.parseInt(parseData(data[2]));
+                int y = Integer.parseInt(parseData(data[3]));
+
+                // Use the callback to create PieceController
+                pieces[y][x] = PieceFactory.get_piece_controller(pieceType, playerIndex);
             }
-    
+
             bufferedReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
+
         return pieces;
+    }
+
+    private static String parseData(String data) {
+        return data.split(":")[1];
     }
 }
