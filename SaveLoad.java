@@ -14,7 +14,7 @@ public class SaveLoad {
             String[] data = {
                     "current_player:" + board.currentPlayer,
                     "switch_turn_check:" + board.switch_turn_check,
-                    "rotated:" + board.isBoardRotated
+                    "rotated:" +  String.valueOf(board.isBoardRotated)
             };
 
             writer.write(String.join(",", data) + "\n");
@@ -65,7 +65,7 @@ public class SaveLoad {
 
             board.currentPlayer = Integer.parseInt(parseData(data[0]));
             board.switch_turn_check = Integer.parseInt(parseData(data[1]));
-            board.isBoardRotated = Boolean.parseBoolean(data[2]);
+            board.isBoardRotated = Boolean.parseBoolean(data[2].trim());
 
             bufferedReader.close();
         } catch (IOException e) {
@@ -103,6 +103,11 @@ public class SaveLoad {
             }
 
             bufferedReader.close();
+
+            // Set icons for the loaded pieces
+            board.setIconsForLoadedPieces(pieces);
+
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;
