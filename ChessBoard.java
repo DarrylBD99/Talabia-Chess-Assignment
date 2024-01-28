@@ -202,6 +202,8 @@ public class ChessBoard extends JFrame {
         }
     }
 
+
+
     // Rotate all the pieces on the chess board.
     void RotateAllPieces() {
         for (int y = 0; y < ROWS; y++) {
@@ -226,6 +228,25 @@ public class ChessBoard extends JFrame {
         }
         return false;
     }
+
+    // New method to set icons for loaded pieces
+    public void setIconsForLoadedPieces(PieceController[][] loadedPieces) {
+        for (int y = 0; y < ROWS; y++) {
+            for (int x = 0; x < COLS; x++) {
+                ChessSquare square = get_square_from_coords(x, y);
+                PieceController loadedPiece = loadedPieces[y][x];
+
+                // Set the icon of the label based on the loaded piece.
+                if (loadedPiece != null && loadedPiece.get_view() != null) {
+                    ImageIcon icon = new ImageIcon(loadedPiece.get_view().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
+                    square.setIcon(icon);
+                } else {
+                    square.setIcon(null);
+                }
+            }
+        }
+    }
+
 
     // Initializes the pieces on the chess board.
     public void initializePieces() {
@@ -287,6 +308,7 @@ public class ChessBoard extends JFrame {
                 {
                     if (piece.getPieceType() == PieceType.TIME) board[y][x] = PieceFactory.get_plus_controller(piece.getPlayerIndex());
                     if (piece.getPieceType() == PieceType.PLUS) board[y][x] = PieceFactory.get_time_controller(piece.getPlayerIndex());
+                    notifLabel.setText("TIME and PLUS have been swapped");
 
                     if (Arrays.stream(REPLACABLE_PIECE_TYPE).anyMatch(piece.getPieceType()::equals))
                     {
@@ -344,6 +366,12 @@ public class ChessBoard extends JFrame {
                 // Display a message dialog
                 String winnerMessage = "Player " + currentPlayer + " has won! Game Over.";
                 JOptionPane.showMessageDialog(null, winnerMessage, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+                // Launch the main menu
+                SwingUtilities.invokeLater(() -> {
+                    MainMenu mainMenu = new MainMenu();
+                    mainMenu.setVisible(true);
+                });
             }
 
             // Switch to the next player's turn
