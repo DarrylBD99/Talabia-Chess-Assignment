@@ -4,14 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenu extends JFrame {
-    ChessBoard chessboard;
+    ChessBoard board;
 
 
     // Runs the board
     void run_board()
     {
-        chessboard = new ChessBoard();
-        chessboard.showView();
+        board = new ChessBoard();
+        board.showView();
     }
 
     public MainMenu() {
@@ -31,6 +31,12 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Close the main menu
+                if (board == null)
+                {
+                    System.err.println("Error: No game is being runned at this time.");
+                    return;
+                }
+                board.showView();
                 dispose();
 
             }
@@ -44,7 +50,14 @@ public class MainMenu extends JFrame {
                 dispose();
 
                 // Launch the chess game
-                SwingUtilities.invokeLater(() -> run_board());
+                SwingUtilities.invokeLater(() -> {
+                    if (board != null) board.dispose();
+
+                    run_board();
+
+                    // Initialize the pieces on the chess board.
+                    board.initializePieces();
+                });
             }
         });
 
@@ -63,7 +76,18 @@ public class MainMenu extends JFrame {
                 dispose();
 
                 // Launch the chess game
-                SwingUtilities.invokeLater(() -> run_board());
+                SwingUtilities.invokeLater(() -> {
+                    run_board();
+                    
+                    // Loads pieces from save.
+                    if (!board.load_pieces_from_save())
+                    {
+                        System.err.println("Error: Save cannot be found. Running new game");
+                        board.initializePieces();
+                    }
+                });
+
+                
             }
         });
 

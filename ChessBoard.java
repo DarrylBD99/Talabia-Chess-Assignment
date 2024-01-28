@@ -89,8 +89,6 @@ public class ChessBoard extends JFrame {
         // Create a panel for the chess board using a GridLayout.
         boardPanel = new JPanel(new GridLayout(ROWS, COLS));
 
-        // Initialize the pieces on the chess board.
-        initializePieces();
         // Initialize the graphical representation of the chess board.
         initializeBoard();
 
@@ -106,7 +104,8 @@ public class ChessBoard extends JFrame {
         returnMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                hideView();
+                
                 // Launch the main menu
                 SwingUtilities.invokeLater(() -> {
                     MainMenu mainMenu = new MainMenu();
@@ -214,17 +213,20 @@ public class ChessBoard extends JFrame {
         }
     }
 
+    // Loads pieces from save.
+    public boolean load_pieces_from_save() {
+        // Checks if has existing save
+        PieceController[][] pieces = SaveLoad.loadGame(this);
+        if (pieces != null) {
+            board = pieces;
+            return true;
+        }
+        return false;
+    }
 
     // Initializes the pieces on the chess board.
-    void initializePieces() {
+    public void initializePieces() {
         for (int y = 0; y < ROWS; y++) {
-            // Checks if has existing save
-            PieceController[][] pieces = SaveLoad.loadGame(this);
-            if (pieces != null) {
-                board = pieces;
-                return;
-            }
-
             // Create an array to represent a row of pieces.
             PieceController[] piece_row = new PieceController[COLS];
 
@@ -267,6 +269,8 @@ public class ChessBoard extends JFrame {
                 board[y] = piece_row;
             }
         }
+
+        UpdatePieces();
     }
 
 
@@ -388,6 +392,12 @@ public class ChessBoard extends JFrame {
         setLocationRelativeTo(null);
         // Set the JFrame as visible.
         setVisible(true);
+    }
+
+    // Displays the JFrame.
+    public void hideView() {
+        // Set the JFrame as visible.
+        setVisible(false);
     }
 
     // Retrieves the piece at the specified coordinates on the chess board.
