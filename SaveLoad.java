@@ -33,7 +33,7 @@ public class SaveLoad {
         }
     }
 
-    public static PieceController[][] loadGame() {
+    public static PieceController[][] loadGame(ChessBoard board) {
         File file = new File("game_save.txt");
         if (!file.exists()) {
             return null;
@@ -56,6 +56,7 @@ public class SaveLoad {
 
                 // Use the callback to create PieceController
                 pieces[y][x] = PieceFactory.get_piece_controller(pieceType, playerIndex);
+                pieces[y][x].set_board(board);
             }
 
             bufferedReader.close();

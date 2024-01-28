@@ -14,7 +14,7 @@ public class PlusController extends PieceController {
 
                 int currentY = start_y + increment;
                 while (currentY != end_y) {
-                    Piece piece = ChessBoard.getPiece(start_x, currentY);
+                    Piece piece = board.getPiece(start_x, currentY);
                     if (piece != null) {
                         return false; // There is a piece in the vertical path
                     }
@@ -25,7 +25,7 @@ public class PlusController extends PieceController {
 
                 int currentX = start_x + increment;
                 while (currentX != end_x) {
-                    Piece piece = ChessBoard.getPiece(currentX, start_y);
+                    Piece piece = board.getPiece(currentX, start_y);
                     if (piece != null) {
                         return false; // There is a piece in the horizontal path
                     }

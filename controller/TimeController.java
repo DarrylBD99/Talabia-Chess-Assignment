@@ -22,7 +22,7 @@ public class TimeController extends PieceController {
             int currentY = start_y + yIncrement;
 
             while (currentX != end_x && currentY != end_y) {
-                Piece piece = ChessBoard.getPiece(currentX, currentY);
+                Piece piece = board.getPiece(currentX, currentY);
                 if (piece != null) {
                     return false; // There is a piece in the diagonal path
                 }

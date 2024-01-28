@@ -45,34 +45,34 @@ public class ChessBoard extends JFrame {
     private static final int THICKNESS = 2;
 
     // Panel that holds the chess board.
-    private static JPanel boardPanel;
+    private JPanel boardPanel;
 
     // 2D array to represent the chess board and store pieces.
-    private static PieceController[][] board;
+    private PieceController[][] board = new PieceController[ROWS][COLS];
 
     // Hashmap to store the coordinates of each square on the chessboard.
-    private static HashMap<int[], ChessSquare> coordinateHashMap;
+    private HashMap<int[], ChessSquare> coordinateHashMap = new HashMap<int[], ChessSquare>();
 
     // Coordinates of Selected Piece
-    public static int[] selected_piece_coords;
+    public int[] selected_piece_coords;
 
     // Variable counter that checks if plus and timer piece should switch
-    static int switch_turn_check;
+    private int switch_turn_check = 0;
 
     // Variable to keep track of the current player.
-    public static int currentPlayer; // Initialize with Player 1
+    public int currentPlayer = 1; // Initialize with Player 1
 
     // Variables that contains the Sun Pieces of both players. 
-    public static Piece[] sun_pieces;
+    public Piece[] sun_pieces = new Piece[2];
 
     // Variable to keep track of the rotation state of the board.
-    static boolean isBoardRotated; // Keep track of the rotation state
+    boolean isBoardRotated = false; // Keep track of the rotation state
 
-    private static JLabel turnLabel; // JLabel to display the current player's turn
+    private JLabel turnLabel; // JLabel to display the current player's turn
 
-    private static JLabel notifLabel; // JLabel to display the notifications of the game
-    private static JButton returnMenu; // JLabel to return to main menu
-    private static JButton saveGameButton; // Button to save game
+    private JLabel notifLabel; // JLabel to display the notifications of the game
+    private JButton returnMenu; // JLabel to return to main menu
+    private JButton saveGameButton; // Button to save game
 
     // Constructor for the ChessView class.
     public ChessBoard() {
@@ -85,14 +85,6 @@ public class ChessBoard extends JFrame {
 
         // Create a panel for the chess board using a BorderLayout.
         JPanel mainPanel = new JPanel(new BorderLayout());
-
-        //
-        board = new PieceController[ROWS][COLS];
-        coordinateHashMap = new HashMap<int[], ChessSquare>();
-        sun_pieces = new Piece[2];
-        isBoardRotated = false;
-        currentPlayer = 1;
-        switch_turn_check = 0;
 
         // Create a panel for the chess board using a GridLayout.
         boardPanel = new JPanel(new GridLayout(ROWS, COLS));
@@ -114,7 +106,7 @@ public class ChessBoard extends JFrame {
         returnMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                dispose();
                 // Launch the main menu
                 SwingUtilities.invokeLater(() -> {
                     MainMenu mainMenu = new MainMenu();
@@ -176,7 +168,7 @@ public class ChessBoard extends JFrame {
                 gbc.weighty = 1.0;
 
                 // Add the mouse listener to each button
-                square.addMouseListener(new ChessMouseListener(x, y));
+                square.addMouseListener(new ChessMouseListener(x, y, this));
 
                 // Add it to the hashmap
                 int[] coords = {x, y};
@@ -192,7 +184,7 @@ public class ChessBoard extends JFrame {
     }
 
     // Update the graphical representation of the pieces on the chess board.
-    static void UpdatePieces() {
+    void UpdatePieces() {
         for (int y = 0; y < ROWS; y++) {
             for (int x = 0; x < COLS; x++) {
                 ChessSquare square = get_square_from_coords(x, y);
@@ -210,7 +202,7 @@ public class ChessBoard extends JFrame {
     }
 
     // Rotate all the pieces on the chess board.
-    static void RotateAllPieces() {
+    void RotateAllPieces() {
         for (int y = 0; y < ROWS; y++) {
             for (int x = 0; x < COLS; x++) {
                 // Set the icon of the label based on the piece present on the chess square.
@@ -225,10 +217,10 @@ public class ChessBoard extends JFrame {
 
 
     // Initializes the pieces on the chess board.
-    static void initializePieces() {
+    void initializePieces() {
         for (int y = 0; y < ROWS; y++) {
             // Checks if has existing save
-            PieceController[][] pieces = SaveLoad.loadGame();
+            PieceController[][] pieces = SaveLoad.loadGame(this);
             if (pieces != null) {
                 board = pieces;
                 return;
@@ -255,6 +247,8 @@ public class ChessBoard extends JFrame {
                 for (int x = 0; x < piece_row.length; x++) {
                     if (piece_row[x] != null) {
                         piece_row[x].get_model().setPlayerIndex(playerIndex);
+                        piece_row[x].set_board(this);
+
                         if (piece_row[x].get_model().getPieceType() == PieceType.SUN) {
                             int index = piece_row[x].get_model().getPlayerIndex() - 1;
                             sun_pieces[index] = piece_row[x].get_model();
@@ -277,7 +271,7 @@ public class ChessBoard extends JFrame {
     }
 
 
-    public static void timer_plus_swap() {
+    public void timer_plus_swap() {
         for (int y = 0; y < ROWS; y++)
         {
             for (int x = 0; x < COLS; x++)
@@ -288,7 +282,12 @@ public class ChessBoard extends JFrame {
                     if (piece.getPieceType() == PieceType.TIME) board[y][x] = PieceFactory.get_plus_controller(piece.getPlayerIndex());
                     if (piece.getPieceType() == PieceType.PLUS) board[y][x] = PieceFactory.get_time_controller(piece.getPlayerIndex());
 
-                    if (Arrays.stream(REPLACABLE_PIECE_TYPE).anyMatch(piece.getPieceType()::equals) && isBoardRotated) board[y][x].rotateIcon(Math.PI);
+                    if (Arrays.stream(REPLACABLE_PIECE_TYPE).anyMatch(piece.getPieceType()::equals))
+                    {
+                        board[y][x].set_board(this);
+                        if (isBoardRotated) board[y][x].rotateIcon(Math.PI);
+                    } 
+                    
                 }
 
             }
@@ -297,7 +296,7 @@ public class ChessBoard extends JFrame {
         switch_turn_check = switch_turn_check % 2;
     }
 
-    static boolean check_win_condition()
+    boolean check_win_condition()
     {
         int index = currentPlayer % 2;
 
@@ -313,7 +312,7 @@ public class ChessBoard extends JFrame {
     }
 
     // Move a chess piece to a new position on the board.
-    public static void move_piece(int x, int y, int new_x, int new_y) {
+    public void move_piece(int x, int y, int new_x, int new_y) {
 //        System.out.println(x + " " + y);
 //        System.out.println(new_x + " " + new_y);
 
@@ -367,7 +366,7 @@ public class ChessBoard extends JFrame {
     }
 
     // Rotate the chess board and all the pieces.
-    private static void rotateBoard() {
+    private void rotateBoard() {
         Component[] components = boardPanel.getComponents();
         boardPanel.removeAll();
 
@@ -393,7 +392,7 @@ public class ChessBoard extends JFrame {
     }
 
     // Retrieves the piece at the specified coordinates on the chess board.
-    public static Piece getPiece(int x, int y) {
+    public Piece getPiece(int x, int y) {
         // Check if the board position is not null before accessing the model.
         if (board[y][x] == null) return null;
 
@@ -401,7 +400,7 @@ public class ChessBoard extends JFrame {
     }
 
     // Retrieves the ChessSquare from the given coordinates on the chess board.
-    public static ChessSquare get_square_from_coords(int x, int y) {
+    public ChessSquare get_square_from_coords(int x, int y) {
         int x_curr, y_curr;
         for (Entry<int[], ChessBoard.ChessSquare> set : coordinateHashMap.entrySet()) {
             x_curr = set.getKey()[0];
@@ -415,25 +414,27 @@ public class ChessBoard extends JFrame {
     // Inner class to handle mouse events.
     private class ChessMouseListener implements MouseListener {
         private int[] coords;
+        private ChessBoard board;
 
         // Constructor for ChessMouseListener.
-        public ChessMouseListener(int x, int y) {
+        public ChessMouseListener(int x, int y, ChessBoard board) {
             int[] coords = {x, y};
             this.coords = coords;
+            this.board = board;
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (ChessBoard.selected_piece_coords != null) {
+            if (board.selected_piece_coords != null) {
                 // Move the piece if a piece is selected and the target square is valid.
-                ChessBoard.move_piece(ChessBoard.selected_piece_coords[0], ChessBoard.selected_piece_coords[1], coords[0], coords[1]);
-            } else if (ChessBoard.getPiece(coords[0], coords[1]) != null) {
+                board.move_piece(board.selected_piece_coords[0], board.selected_piece_coords[1], coords[0], coords[1]);
+            } else if (board.getPiece(coords[0], coords[1]) != null) {
                 // Select or deselect a piece based on the user's click.
                 ChessSquare button = (ChessSquare) e.getSource();
                 button.set_selected(!button.get_selected());
 
                 // Set the selected piece coordinates or null if no piece is selected.
-                ChessBoard.selected_piece_coords = (button.get_selected()) ? coords : null;
+                board.selected_piece_coords = (button.get_selected()) ? coords : null;
             }
         }
 

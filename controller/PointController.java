@@ -17,7 +17,7 @@ public class PointController extends PieceController {
 
         if (end_y == start_y + direction * 2 && !played_first_move)
         {
-            Piece piece = ChessBoard.getPiece(start_x, start_y + direction);
+            Piece piece = board.getPiece(start_x, start_y + direction);
             if (piece != null) return false;
         }
         else if (!(end_y == start_y + direction)) return false;
