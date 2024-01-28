@@ -12,16 +12,18 @@ public class SaveLoad {
             for (int y = 0; y < pieces.length; y++) {
                 PieceController[] pieceRow = pieces[y];
                 for (int x = 0; x < pieceRow.length; x++) {
-                    Piece piece = pieceRow[x].get_model();
+                    if (pieceRow[x] != null) { // Check if the piece is not null
+                        Piece piece = pieceRow[x].get_model();
 
-                    String[] data = {
-                            "index:" + piece.getPlayerIndex(),
-                            "type:" + piece.getPieceType().name(),
-                            "x:" + x,
-                            "y:" + y
-                    };
+                        String[] data = {
+                                "index:" + piece.getPlayerIndex(),
+                                "type:" + piece.getPieceType().name(),
+                                "x:" + x,
+                                "y:" + y
+                        };
 
-                    writer.write(String.join(",", data) + "\n");
+                        writer.write(String.join(",", data) + "\n");
+                    }
                 }
             }
 
@@ -37,7 +39,7 @@ public class SaveLoad {
             return null;
         }
 
-        PieceController[][] pieces = new PieceController[7][6]; // Assuming an 8x8 board
+        PieceController[][] pieces = new PieceController[6][7];
 
         try {
             FileReader reader = new FileReader(file);
