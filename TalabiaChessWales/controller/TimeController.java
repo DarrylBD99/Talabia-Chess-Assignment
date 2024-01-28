@@ -1,3 +1,7 @@
+package TalabiaChessWales.controller;
+
+import TalabiaChessWales.model.Piece;
+
 public class TimeController extends PieceController {
 
     public TimeController(Piece model) {

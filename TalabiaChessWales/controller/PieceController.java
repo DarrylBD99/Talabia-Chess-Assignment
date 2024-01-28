@@ -1,4 +1,11 @@
+package TalabiaChessWales.controller;
+
 import java.awt.*;
+
+import TalabiaChessWales.ChessBoard;
+import TalabiaChessWales.PieceType;
+import TalabiaChessWales.model.Piece;
+import TalabiaChessWales.view.PieceView;
 
 public abstract class PieceController implements Cloneable {
     // declaring the variables model and view  
@@ -60,8 +67,8 @@ public abstract class PieceController implements Cloneable {
     public Image get_view()
     {
         if (view == null) view = new PieceView(model);
-        if (view.icon == null) return null;
-        return view.icon.getImage();
+        if (view.getIcon() == null) return null;
+        return view.getIcon().getImage();
     }
 
     public Piece get_model()

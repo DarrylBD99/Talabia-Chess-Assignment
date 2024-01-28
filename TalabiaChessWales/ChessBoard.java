@@ -1,3 +1,5 @@
+package TalabiaChessWales;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,6 +8,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.*;
 import java.util.Map.Entry;
+
+import TalabiaChessWales.controller.*;
+import TalabiaChessWales.factory.PieceFactory;
+import TalabiaChessWales.model.Piece;
 
 // Represents the main graphical user interface for the chess game.
 public class ChessBoard extends JFrame {

@@ -1,3 +1,7 @@
+package TalabiaChessWales.controller;
+
+import TalabiaChessWales.model.Piece;
+
 public class PlusController extends PieceController {
     public PlusController(Piece model) {
         super(model);

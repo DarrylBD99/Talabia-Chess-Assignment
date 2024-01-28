@@ -1,12 +1,16 @@
+package TalabiaChessWales.view;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import TalabiaChessWales.PieceType;
+import TalabiaChessWales.model.Piece;
+
 public class PieceView {
-    ImageIcon icon;
+    private ImageIcon icon;
     
     public PieceView(Piece model)
     {
@@ -14,19 +18,20 @@ public class PieceView {
         PieceType pieceType = model.getPieceType();
 
         // Define the base path as a constant or configuration option.
-        String path = String.format("/resources/%d/%s.png", playerIndex, pieceType.toString().toLowerCase());
+        String path = String.format("resources/%d/%s.png", playerIndex, pieceType.toString().toLowerCase());
+        
+        // Print information about the loaded image.
+        System.out.println("Image path: " + path);
 
         try {
-            icon = new ImageIcon(ImageIO.read(getClass().getResource(path)));
+            icon = new ImageIcon(ImageIO.read(PieceView.class.getResource(path)));
 
             if (model.getRotated()) rotateIcon(Math.PI);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        // Print information about the loaded image.
-        System.out.println("Image path: " + path);
+
         if (icon != null)
         {
             System.out.println("Icon width: " + icon.getIconWidth());
@@ -47,4 +52,6 @@ public class PieceView {
 
         icon = new ImageIcon(image);
     }
+
+    public ImageIcon getIcon() { return icon; }
 }

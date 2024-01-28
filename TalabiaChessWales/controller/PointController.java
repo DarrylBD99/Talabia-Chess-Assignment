@@ -1,3 +1,8 @@
+package TalabiaChessWales.controller;
+
+import TalabiaChessWales.ChessBoard;
+import TalabiaChessWales.model.Piece;
+
 public class PointController extends PieceController {
     private boolean has_reached_end = false;
     private boolean played_first_move = false;

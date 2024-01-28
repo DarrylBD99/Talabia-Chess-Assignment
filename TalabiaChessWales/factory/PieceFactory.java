@@ -1,3 +1,9 @@
+package TalabiaChessWales.factory;
+
+import TalabiaChessWales.PieceType;
+import TalabiaChessWales.controller.*;
+import TalabiaChessWales.model.Piece;
+
 public abstract class PieceFactory{
 
     static Piece get_piece_model(PieceType type)

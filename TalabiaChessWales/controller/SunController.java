@@ -1,3 +1,7 @@
+package TalabiaChessWales.controller;
+
+import TalabiaChessWales.model.Piece;
+
 public class SunController extends PieceController {
 
     public SunController(Piece model) {

@@ -1,8 +1,14 @@
+package TalabiaChessWales;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import TalabiaChessWales.controller.PieceController;
+import TalabiaChessWales.factory.PieceFactory;
+import TalabiaChessWales.model.Piece;
 
 public class SaveLoad {
     public static void saveGame() {

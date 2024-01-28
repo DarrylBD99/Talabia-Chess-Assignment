@@ -1,3 +1,7 @@
+package TalabiaChessWales.model;
+
+import TalabiaChessWales.PieceType;
+
 // Abstract class representing a generic chess piece.
 public class Piece {
     // Player index representing the owner of the piece.
