@@ -72,6 +72,7 @@ public class ChessBoard extends JFrame {
 
     private static JLabel notifLabel; // JLabel to display the notifications of the game
     private static JButton returnMenu; // JLabel to return to main menu
+    private static JButton saveGameButton; // Button to save game
 
     // Constructor for the ChessView class.
     public ChessBoard() {
@@ -113,9 +114,6 @@ public class ChessBoard extends JFrame {
         returnMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Close the current chess game
-                boardPanel.removeAll();
-                dispose();
 
                 // Launch the main menu
                 SwingUtilities.invokeLater(() -> {
@@ -125,10 +123,20 @@ public class ChessBoard extends JFrame {
             }
         });
 
+        saveGameButton = new JButton("Save Game");
+        saveGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SaveLoad.saveGame(board);
+
+            }
+        });
+
         // Create a panel for turnLabel and returnMenu in the south.
-        JPanel southPanel = new JPanel(new GridLayout(2, 1));
+        JPanel southPanel = new JPanel(new GridLayout(1, 1));
         southPanel.add(turnLabel);
         southPanel.add(returnMenu);
+        southPanel.add(saveGameButton);
 
         // Add the south panel to the main panel in the south.
         mainPanel.add(southPanel, BorderLayout.SOUTH);
@@ -215,6 +223,7 @@ public class ChessBoard extends JFrame {
         }
     }
 
+
     // Initializes the pieces on the chess board.
     static void initializePieces() {
         for (int y = 0; y < ROWS; y++) {
@@ -224,19 +233,16 @@ public class ChessBoard extends JFrame {
                 board = pieces;
                 return;
             }
-            
+
             // Create an array to represent a row of pieces.
             PieceController[] piece_row = new PieceController[COLS];
-            
+
             // Determine whether the row is on the front or back based on its index.
-            if (y == 0 || y == (ROWS - 1))
-            {
+            if (y == 0 || y == (ROWS - 1)) {
                 // Initialize a new array with copies of elements from ROW_FORMAT_BACK.
                 for (int i = 0; i < ROW_FORMAT_BACK.length; i++)
                     piece_row[i] = ROW_FORMAT_BACK[i].clone();
-            }
-            else if (y == 1 || y == (ROWS - 2))
-            {
+            } else if (y == 1 || y == (ROWS - 2)) {
                 // Initialize a new array with copies of elements from ROW_FORMAT_FRONT.
                 for (int i = 0; i < ROW_FORMAT_FRONT.length; i++)
                     piece_row[i] = ROW_FORMAT_FRONT[i].clone();
@@ -249,8 +255,7 @@ public class ChessBoard extends JFrame {
                 for (int x = 0; x < piece_row.length; x++) {
                     if (piece_row[x] != null) {
                         piece_row[x].get_model().setPlayerIndex(playerIndex);
-                        if (piece_row[x].get_model().getPieceType() == PieceType.SUN)
-                        {
+                        if (piece_row[x].get_model().getPieceType() == PieceType.SUN) {
                             int index = piece_row[x].get_model().getPlayerIndex() - 1;
                             sun_pieces[index] = piece_row[x].get_model();
                         }
@@ -270,6 +275,7 @@ public class ChessBoard extends JFrame {
             }
         }
     }
+
 
     public static void timer_plus_swap() {
         for (int y = 0; y < ROWS; y++)
@@ -294,6 +300,7 @@ public class ChessBoard extends JFrame {
     static boolean check_win_condition()
     {
         int index = currentPlayer % 2;
+
         for (int y = 0; y < ROWS; y++)
         {
             for (int x = 0; x < COLS; x++)
@@ -329,7 +336,9 @@ public class ChessBoard extends JFrame {
             // Check if player has won
             if (check_win_condition())
             {
-                // insert player win code
+                // Display a message dialog
+                String winnerMessage = "Player " + currentPlayer + " has won! Game Over.";
+                JOptionPane.showMessageDialog(null, winnerMessage, "Game Over", JOptionPane.INFORMATION_MESSAGE);
             }
 
             // Switch to the next player's turn
