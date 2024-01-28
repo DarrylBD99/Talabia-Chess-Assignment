@@ -22,11 +22,21 @@ public class MainMenu extends JFrame {
         // Create buttons for starting the game and exiting
         JButton continueButton = new JButton("Continue Game");
         JButton startButton = new JButton("Start New Game");
-        JButton saveButton = new JButton("Save Game");
         JButton loadButton = new JButton("Load Game");
         JButton exitButton = new JButton("Exit");
 
         // Add action listeners to the buttons
+
+        continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Close the main menu
+                dispose();
+
+            }
+        });
+
+
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,12 +56,22 @@ public class MainMenu extends JFrame {
             }
         });
 
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Close the main menu
+                dispose();
+
+                // Launch the chess game
+                SwingUtilities.invokeLater(() -> run_board());
+            }
+        });
+
         // Create a panel for buttons
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(5, 1));
+        buttonPanel.setLayout(new GridLayout(4, 1));
         buttonPanel.add(continueButton);
         buttonPanel.add(startButton);
-        buttonPanel.add(saveButton);
         buttonPanel.add(loadButton);
         buttonPanel.add(exitButton);
 
