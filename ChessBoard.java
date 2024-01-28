@@ -219,7 +219,17 @@ public class ChessBoard extends JFrame {
     }
 
     // Loads pieces from save.
-    public boolean load_pieces_from_save() {
+    boolean load_data_from_save() {
+        if (!SaveLoad.load_board_data(this)) return false;
+
+        // Update the turn label
+        turnLabel.setText("Current Turn: Player " + currentPlayer);
+        
+        return load_pieces_from_save();
+    }
+
+    // Loads pieces from save.
+    boolean load_pieces_from_save() {
         // Checks if has existing save
         PieceController[][] pieces = SaveLoad.loadGame(this);
         if (pieces != null) {
@@ -388,7 +398,7 @@ public class ChessBoard extends JFrame {
             isBoardRotated = !isBoardRotated;
             
             // Rotate the board
-            rotateBoard();
+            rotateBoard(!isBoardRotated);
 
         } else {
             System.out.println("Invalid move - not a valid move for the selected piece.");
@@ -403,19 +413,23 @@ public class ChessBoard extends JFrame {
     }
 
     // Rotate the chess board and all the pieces.
-    void rotateBoard() {
-        Component[] components = boardPanel.getComponents();
-        boardPanel.removeAll();
-
-        // Rotate the board components
-        for (int i = components.length - 1; i >= 0; i--) {
-            boardPanel.add(components[i]);
+    void rotateBoard(boolean value) {
+        if (value != isBoardRotated)
+        {
+            Component[] components = boardPanel.getComponents();
+            boardPanel.removeAll();
+    
+            // Rotate the board components
+            for (int i = components.length - 1; i >= 0; i--) {
+                boardPanel.add(components[i]);
+            }
+    
+            // Rotate all the pieces on the board.
+            RotateAllPieces();
+            boardPanel.revalidate();
+            boardPanel.repaint();
         }
-
-        // Rotate all the pieces on the board.
-        RotateAllPieces();
-        boardPanel.revalidate();
-        boardPanel.repaint();
+        isBoardRotated = value;
     }
 
     // Displays the JFrame.

@@ -64,8 +64,6 @@ public class SaveLoad {
 
             board.currentPlayer = Integer.parseInt(parseData(data[0]));
 
-            board.isBoardRotated = (board.currentPlayer % 2 == 0);
-
             board.switch_turn_check = Integer.parseInt(parseData(data[1]));
 
             bufferedReader.close();
