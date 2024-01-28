@@ -18,13 +18,13 @@ public class PieceView {
         PieceType pieceType = model.getPieceType();
 
         // Define the base path as a constant or configuration option.
-        String path = String.format("resources/%d/%s.png", playerIndex, pieceType.toString().toLowerCase());
+        String path = String.format("/res/%d/%s.png", playerIndex, pieceType.toString().toLowerCase());
         
         // Print information about the loaded image.
         System.out.println("Image path: " + path);
 
         try {
-            icon = new ImageIcon(ImageIO.read(PieceView.class.getResource(path)));
+            icon = new ImageIcon(ImageIO.read(getClass().getResource(path)));
 
             if (model.getRotated()) rotateIcon(Math.PI);
 
