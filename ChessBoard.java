@@ -57,7 +57,7 @@ public class ChessBoard extends JFrame {
     public int[] selected_piece_coords;
 
     // Variable counter that checks if plus and timer piece should switch
-    private int switch_turn_check = 0;
+    public int switch_turn_check = 0;
 
     // Variable to keep track of the current player.
     public int currentPlayer = 1; // Initialize with Player 1
@@ -66,7 +66,7 @@ public class ChessBoard extends JFrame {
     public Piece[] sun_pieces = new Piece[2];
 
     // Variable to keep track of the rotation state of the board.
-    boolean isBoardRotated = false; // Keep track of the rotation state
+    public boolean isBoardRotated = false; // Keep track of the rotation state
 
     private JLabel turnLabel; // JLabel to display the current player's turn
 
@@ -118,7 +118,7 @@ public class ChessBoard extends JFrame {
         saveGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SaveLoad.saveGame(board);
+                SaveLoad.saveGame();
 
             }
         });
@@ -142,6 +142,9 @@ public class ChessBoard extends JFrame {
         // Add the main panel to the JFrame.
         add(mainPanel);
     }
+
+    public PieceController[][] get_board() { return board; }
+    
     // Initializes the graphical representation of the chess board.
     void initializeBoard() {
         boardPanel.setLayout(new GridLayout(ROWS, COLS));

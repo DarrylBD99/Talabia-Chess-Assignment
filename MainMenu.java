@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenu extends JFrame {
-    ChessBoard board;
+    static ChessBoard board;
 
 
     // Runs the board
@@ -79,8 +79,10 @@ public class MainMenu extends JFrame {
                 SwingUtilities.invokeLater(() -> {
                     run_board();
                     
+                    boolean board_loaded = SaveLoad.load_board_data(board);
+
                     // Loads pieces from save.
-                    if (!board.load_pieces_from_save())
+                    if (board_loaded && !board.load_pieces_from_save())
                     {
                         System.err.println("Error: Save cannot be found. Running new game");
                         board.initializePieces();
