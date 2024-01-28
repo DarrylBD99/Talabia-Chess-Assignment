@@ -33,7 +33,7 @@ public class MainMenu extends JFrame {
                 // Close the main menu
                 if (board == null)
                 {
-                    System.err.println("Error: No game is being runned at this time.");
+                    System.err.println("Error: No game is running at this time.");
                     return;
                 }
                 board.showView();
@@ -80,6 +80,7 @@ public class MainMenu extends JFrame {
                     run_board();
                     
                     boolean board_loaded = SaveLoad.load_board_data(board);
+
 
                     // Loads pieces from save.
                     if (board_loaded && !board.load_pieces_from_save())
