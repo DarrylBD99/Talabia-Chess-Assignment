@@ -293,8 +293,7 @@ public class ChessBoard extends JFrame {
 
     static boolean check_win_condition()
     {
-        int index = (currentPlayer + 1) % 2;
-
+        int index = currentPlayer % 2;
         for (int y = 0; y < ROWS; y++)
         {
             for (int x = 0; x < COLS; x++)
