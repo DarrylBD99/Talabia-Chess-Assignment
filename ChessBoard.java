@@ -173,7 +173,6 @@ public class ChessBoard extends JFrame {
                 // Add it to the hashmap
                 int[] coords = {x, y};
                 coordinateHashMap.put(coords, square);
-                System.out.println(coords);
                 // Add the square label to the board panel.
                 boardPanel.add(square, gbc);
             }

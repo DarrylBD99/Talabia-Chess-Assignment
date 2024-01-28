@@ -14,8 +14,6 @@ public class HourGlassController extends PieceController {
             // Check if the move is a valid 3x2 L shape
             int xDistance = Math.abs(end_x - start_x);
             int yDistance = Math.abs(end_y - start_y);
-            System.out.println(xDistance);
-            System.out.println(yDistance);
 
             if ((xDistance == MOVE_1 && yDistance == MOVE_2) || (xDistance == MOVE_2 && yDistance == MOVE_1)) return true;
         }
