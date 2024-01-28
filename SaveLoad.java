@@ -13,8 +13,7 @@ public class SaveLoad {
             
             String[] data = {
                     "current_player:" + board.currentPlayer,
-                    "switch_turn_check:" + board.switch_turn_check,
-                    "rotated:" +  String.valueOf(board.isBoardRotated)
+                    "switch_turn_check:" + board.switch_turn_check
             };
 
             writer.write(String.join(",", data) + "\n");
@@ -64,8 +63,10 @@ public class SaveLoad {
             String[] data = line.split(",");
 
             board.currentPlayer = Integer.parseInt(parseData(data[0]));
+
+            board.isBoardRotated = (board.currentPlayer % 2 == 0);
+
             board.switch_turn_check = Integer.parseInt(parseData(data[1]));
-            board.isBoardRotated = Boolean.parseBoolean(data[2].trim());
 
             bufferedReader.close();
         } catch (IOException e) {

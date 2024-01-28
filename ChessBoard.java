@@ -384,6 +384,9 @@ public class ChessBoard extends JFrame {
             // Update the turn label
             turnLabel.setText("Current Turn: Player " + currentPlayer);
 
+            // Toggle the board rotation state
+            isBoardRotated = !isBoardRotated;
+            
             // Rotate the board
             rotateBoard();
 
@@ -400,7 +403,7 @@ public class ChessBoard extends JFrame {
     }
 
     // Rotate the chess board and all the pieces.
-    private void rotateBoard() {
+    void rotateBoard() {
         Component[] components = boardPanel.getComponents();
         boardPanel.removeAll();
 
@@ -409,8 +412,6 @@ public class ChessBoard extends JFrame {
             boardPanel.add(components[i]);
         }
 
-        // Toggle the board rotation state
-        isBoardRotated = !isBoardRotated;
         // Rotate all the pieces on the board.
         RotateAllPieces();
         boardPanel.revalidate();

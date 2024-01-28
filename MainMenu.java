@@ -81,13 +81,15 @@ public class MainMenu extends JFrame {
                     
                     boolean board_loaded = SaveLoad.load_board_data(board);
 
-
                     // Loads pieces from save.
-                    if (board_loaded && !board.load_pieces_from_save())
+                    if (!(board_loaded && board.load_pieces_from_save()))
                     {
                         System.err.println("Error: Save cannot be found. Running new game");
                         board.initializePieces();
                     }
+
+                    if (board.isBoardRotated) board.rotateBoard();
+                    board.UpdatePieces();
                 });
 
                 
