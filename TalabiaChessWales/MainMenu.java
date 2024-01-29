@@ -1,3 +1,5 @@
+// Class function: Handles the main menu of the game
+
 package TalabiaChessWales;
 
 import javax.swing.*;
