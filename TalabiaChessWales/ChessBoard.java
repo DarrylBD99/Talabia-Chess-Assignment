@@ -21,7 +21,7 @@ public class ChessBoard extends JFrame {
     public static final int COLS = 7;
 
     // Size of each square on the chessboard
-    private static final int squareSize = 50;
+    private static final int SQUARESIZE = 50;
 
     // Arrays representing the initial arrangement of pieces on the front and back rows.
     private static final PieceController[] ROW_FORMAT_FRONT = {
@@ -199,7 +199,7 @@ public class ChessBoard extends JFrame {
                 // Set the icon of the label based on the piece present on the chess square.
                 Piece piece = getPiece(x, y);
                 if (piece != null && board[y][x].get_view() != null) {
-                    ImageIcon icon = new ImageIcon(board[y][x].get_view().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
+                    ImageIcon icon = new ImageIcon(board[y][x].get_view().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH));
                     square.setIcon(icon);
                 } else {
                     square.setIcon(null);
@@ -254,7 +254,7 @@ public class ChessBoard extends JFrame {
 
                 // Set the icon of the label based on the loaded piece.
                 if (loadedPiece != null && loadedPiece.get_view() != null) {
-                    ImageIcon icon = new ImageIcon(loadedPiece.get_view().getScaledInstance(squareSize, squareSize, Image.SCALE_SMOOTH));
+                    ImageIcon icon = new ImageIcon(loadedPiece.get_view().getScaledInstance(SQUARESIZE, SQUARESIZE, Image.SCALE_SMOOTH));
                     square.setIcon(icon);
                 } else {
                     square.setIcon(null);
