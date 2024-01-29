@@ -1,3 +1,5 @@
+// Class function: Handles the GUI and pieces. 
+
 package TalabiaChessWales;
 
 import javax.swing.*;
