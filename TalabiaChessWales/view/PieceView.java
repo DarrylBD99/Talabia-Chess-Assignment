@@ -1,3 +1,5 @@
+//Class function: Handles the icons of the pieces in the GUI 
+
 package TalabiaChessWales.view;
 
 import javax.imageio.ImageIO;
