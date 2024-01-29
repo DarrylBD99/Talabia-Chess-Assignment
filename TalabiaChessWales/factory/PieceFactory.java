@@ -1,3 +1,5 @@
+// Class function: 
+
 package TalabiaChessWales.factory;
 
 import TalabiaChessWales.PieceType;
