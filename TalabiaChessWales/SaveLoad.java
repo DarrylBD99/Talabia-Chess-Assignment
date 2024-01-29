@@ -1,3 +1,5 @@
+// Class function: Handles the save and load functions of the game
+
 package TalabiaChessWales;
 
 import java.io.BufferedReader;
