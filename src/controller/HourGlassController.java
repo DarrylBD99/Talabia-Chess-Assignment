@@ -1,6 +1,6 @@
-package TalabiaChessWales.controller;
+package src.controller;
 
-import TalabiaChessWales.model.Piece;
+import src.model.Piece;
 
 public class HourGlassController extends PieceController {
     private static final int MOVE_1 = 1;

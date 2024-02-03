@@ -1,11 +1,11 @@
-package TalabiaChessWales.controller;
+package src.controller;
 
 import java.awt.*;
 
-import TalabiaChessWales.ChessBoard;
-import TalabiaChessWales.PieceType;
-import TalabiaChessWales.model.Piece;
-import TalabiaChessWales.view.PieceView;
+import src.ChessBoard;
+import src.PieceType;
+import src.model.Piece;
+import src.view.PieceView;
 
 public abstract class PieceController implements Cloneable {
     // declaring the variables model and view  

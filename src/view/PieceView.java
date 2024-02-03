@@ -1,6 +1,6 @@
 //Class function: Handles the icons of the pieces in the GUI 
 
-package TalabiaChessWales.view;
+package src.view;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -8,8 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import TalabiaChessWales.PieceType;
-import TalabiaChessWales.model.Piece;
+import src.PieceType;
+import src.model.Piece;
 
 public class PieceView {
     private ImageIcon icon;

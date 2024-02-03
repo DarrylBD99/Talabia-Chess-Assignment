@@ -1,6 +1,6 @@
-package TalabiaChessWales.controller;
+package src.controller;
 
-import TalabiaChessWales.model.Piece;
+import src.model.Piece;
 
 public class SunController extends PieceController {
 

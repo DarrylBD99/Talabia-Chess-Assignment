@@ -1,6 +1,6 @@
-package TalabiaChessWales.model;
+package src.model;
 
-import TalabiaChessWales.PieceType;
+import src.PieceType;
 
 // Abstract class representing a generic chess piece.
 public class Piece {

@@ -1,16 +1,12 @@
 // Class function: Handles the save and load functions of the game
 
-package TalabiaChessWales;
+package src;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
-import TalabiaChessWales.controller.PieceController;
-import TalabiaChessWales.factory.PieceFactory;
-import TalabiaChessWales.model.Piece;
+import src.controller.PieceController;
+import src.factory.PieceFactory;
+import src.model.Piece;
 
 public class SaveLoad {
     public static void saveGame() {

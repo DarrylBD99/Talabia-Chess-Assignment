@@ -1,7 +1,7 @@
-package TalabiaChessWales.controller;
+package src.controller;
 
-import TalabiaChessWales.ChessBoard;
-import TalabiaChessWales.model.Piece;
+import src.ChessBoard;
+import src.model.Piece;
 
 public class PointController extends PieceController {
     private boolean has_reached_end = false;

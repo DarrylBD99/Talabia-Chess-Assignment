@@ -1,6 +1,6 @@
 // Class function: Enumerator for the board pieces
 
-package TalabiaChessWales;
+package src;
 
 public enum PieceType {
     POINT,

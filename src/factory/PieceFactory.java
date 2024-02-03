@@ -1,10 +1,10 @@
 // Class function: 
 
-package TalabiaChessWales.factory;
+package src.factory;
 
-import TalabiaChessWales.PieceType;
-import TalabiaChessWales.controller.*;
-import TalabiaChessWales.model.Piece;
+import src.PieceType;
+import src.controller.*;
+import src.model.Piece;
 
 public abstract class PieceFactory{
 

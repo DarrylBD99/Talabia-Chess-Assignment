@@ -1,6 +1,6 @@
 // Class function: Handles the GUI and pieces. 
 
-package TalabiaChessWales;
+package src;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +11,9 @@ import java.awt.event.MouseListener;
 import java.util.*;
 import java.util.Map.Entry;
 
-import TalabiaChessWales.controller.*;
-import TalabiaChessWales.factory.PieceFactory;
-import TalabiaChessWales.model.Piece;
+import src.controller.*;
+import src.factory.PieceFactory;
+import src.model.Piece;
 
 // Represents the main graphical user interface for the chess game.
 public class ChessBoard extends JFrame {
