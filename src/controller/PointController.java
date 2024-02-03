@@ -5,7 +5,6 @@ import src.model.Piece;
 
 public class PointController extends PieceController {
     private boolean has_reached_end = false;
-    private boolean played_first_move = false;
 
     public PointController(Piece model) {
         super(model);
@@ -20,7 +19,7 @@ public class PointController extends PieceController {
         
         if (start_x != end_x) return false;
 
-        if (end_y == start_y + direction * 2 && !played_first_move)
+        if (end_y == start_y + direction * 2)
         {
             Piece piece = board.getPiece(start_x, start_y + direction);
             if (piece != null) return false;
@@ -36,7 +35,6 @@ public class PointController extends PieceController {
                 get_model().setRotated(!get_model().getRotated());
                 rotateIcon(Math.PI);
             }
-            played_first_move = true;
             return true;
         }
 
